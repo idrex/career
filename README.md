@@ -1,35 +1,13 @@
-# 前端组wiki
+# wiki
 
-### 前端组相关hosts
-```
-  192.168.145.8 wiki.dev.daikuan.com
-  192.168.145.8 dashboard.dev.daikuan.com
-  192.168.145.8 mock.dev.daikuan.com
-  192.168.145.8 npm.dev.taoche.com
-  192.168.145.8 tcvui.dev.taoche.com
-  192.168.145.8 placehold.it
-  192.168.155.149 rap.crm.yxqiche.com
-```
+## 使用说明
 
-### 相关站点
-* easy mock: http://mock.dev.daikuan.com
-* wiki: http://wiki.dev.daikuan.com
-* dashboard: http://dashboard.dev.daikuan.com
-* npm私服: http://npm.dev.taoche.com
-* tcvui: http://tcvui.dev.taoche.com
-
-### wiki项目
-```bash
-  # clone下来push即更新
-  git clone ssh://git@git.taoche.com:52000/fe/wiki.git
-```
-
-### 使用说明
 * SUMMARY.md为左边栏目录
 * 所有文件通过markdown格式来写, .md命名
 * 直接在master编写, push后自动更新
 
-### 小册推荐
+## 小册推荐
+
 <div style="display:flex;width:100%">
   <div style="width:25%;">
     <a href="/技术分享/前端性能优化原理与实践/知识体系与小册格局.html">
