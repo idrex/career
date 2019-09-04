@@ -1,0 +1,2072 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>渲染篇4：千方百计——EventLoop与异步更新策略 · 个人wiki</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="最后一击——回流（Reflow）与重绘（Repaint）.html" />
+    
+    
+    <link rel="prev" href="对症下药——DOM优化原理与基本实践.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">规范</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../../规范/分支开发规范.html">
+            
+                <a href="../../规范/分支开发规范.html">
+            
+                    
+                    分支开发规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../../规范/es6编码规范.html">
+            
+                <a href="../../规范/es6编码规范.html">
+            
+                    
+                    ES6编码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../../规范/vue编码规范.html">
+            
+                <a href="../../规范/vue编码规范.html">
+            
+                    
+                    vue编码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../../规范/Airbnb-React-JSX编码规范.html">
+            
+                <a href="../../规范/Airbnb-React-JSX编码规范.html">
+            
+                    
+                    Airbnb-React-JSX编码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">git</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../../git/git基本使用.html">
+            
+                <a href="../../git/git基本使用.html">
+            
+                    
+                    git基本使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../../git/git分支管理策略.html">
+            
+                <a href="../../git/git分支管理策略.html">
+            
+                    
+                    git分支管理策略
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">技术分享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../yarn.html">
+            
+                <a href="../yarn.html">
+            
+                    
+                    yarn vs npm vs cnpm
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../react生命周期.html">
+            
+                <a href="../react生命周期.html">
+            
+                    
+                    react生命周期
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" >
+            
+                <span>
+            
+                    
+                    前端性能优化原理与实践
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.3.1" data-path="知识体系与小册格局.html">
+            
+                <a href="知识体系与小册格局.html">
+            
+                    
+                    开篇：知识体系与小册格局
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.2" data-path="webpack性能调优与Gzip原理.html">
+            
+                <a href="webpack性能调优与Gzip原理.html">
+            
+                    
+                    网络篇1：webpack性能调优与Gzip原理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.3" data-path="图片优化——质量与性能的博弈.html">
+            
+                <a href="图片优化——质量与性能的博弈.html">
+            
+                    
+                    网络篇2：图片优化——质量与性能的博弈
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.4" data-path="浏览器缓存机制介绍与缓存策略剖析.html">
+            
+                <a href="浏览器缓存机制介绍与缓存策略剖析.html">
+            
+                    
+                    存储篇1：浏览器缓存机制介绍与缓存策略剖析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.5" data-path="本地存储——从Cookie到WebStorage、IndexDB.html">
+            
+                <a href="本地存储——从Cookie到WebStorage、IndexDB.html">
+            
+                    
+                    存储篇2：本地存储——从Cookie到WebStorage、IndexDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.6" data-path="CDN的缓存与回源机制解析.html">
+            
+                <a href="CDN的缓存与回源机制解析.html">
+            
+                    
+                    彩蛋篇：CDN的缓存与回源机制解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.7" data-path="服务端渲染的探索与实践.html">
+            
+                <a href="服务端渲染的探索与实践.html">
+            
+                    
+                    渲染篇1：服务端渲染的探索与实践
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.8" data-path="知己知彼——解锁浏览器背后的运行机制.html">
+            
+                <a href="知己知彼——解锁浏览器背后的运行机制.html">
+            
+                    
+                    渲染篇2：知己知彼——解锁浏览器背后的运行机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.9" data-path="对症下药——DOM优化原理与基本实践.html">
+            
+                <a href="对症下药——DOM优化原理与基本实践.html">
+            
+                    
+                    渲染篇3：对症下药——DOM优化原理与基本实践
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.3.10" data-path="千方百计——EventLoop与异步更新策略.html">
+            
+                <a href="千方百计——EventLoop与异步更新策略.html">
+            
+                    
+                    渲染篇4：千方百计——EventLoop与异步更新策略
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.11" data-path="最后一击——回流（Reflow）与重绘（Repaint）.html">
+            
+                <a href="最后一击——回流（Reflow）与重绘（Repaint）.html">
+            
+                    
+                    渲染篇5：最后一击——回流（Reflow）与重绘（Repaint）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.12" data-path="优化首屏体验——Lazy-Load初探.html">
+            
+                <a href="优化首屏体验——Lazy-Load初探.html">
+            
+                    
+                    应用篇1：优化首屏体验——Lazy-Load初探
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.13" data-path="事件的节流（throttle）与防抖（debounce）.html">
+            
+                <a href="事件的节流（throttle）与防抖（debounce）.html">
+            
+                    
+                    应用篇2：事件的节流（throttle）与防抖（debounce）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.14" data-path="Performance、LightHouse与性能API.html">
+            
+                <a href="Performance、LightHouse与性能API.html">
+            
+                    
+                    性能监测篇：Performance、LightHouse与性能API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.15" data-path="前方的路：希望成为你的起点.html">
+            
+                <a href="前方的路：希望成为你的起点.html">
+            
+                    
+                    前方的路：希望成为你的起点
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" >
+            
+                <span>
+            
+                    
+                    React实战：设计模式和最佳实践
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.4.1" data-path="../React实战：设计模式和最佳实践/React的设计思想.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React的设计思想.html">
+            
+                    
+                    React的设计思想
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.2" data-path="../React实战：设计模式和最佳实践/组件实践（1）：如何定义清晰可维护的接口.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件实践（1）：如何定义清晰可维护的接口.html">
+            
+                    
+                    组件实践（1）：如何定义清晰可维护的接口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.3" data-path="../React实战：设计模式和最佳实践/组件实践（2）：组件的内部实现.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件实践（2）：组件的内部实现.html">
+            
+                    
+                    组件实践（2）：组件的内部实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.4" data-path="../React实战：设计模式和最佳实践/组件实践（3）：组件化样式.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件实践（3）：组件化样式.html">
+            
+                    
+                    组件实践（3）：组件化样式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.5" data-path="../React实战：设计模式和最佳实践/组件设计模式（1）：聪明组件和傻瓜组件.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件设计模式（1）：聪明组件和傻瓜组件.html">
+            
+                    
+                    组件设计模式（1）：聪明组件和傻瓜组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.6" data-path="../React实战：设计模式和最佳实践/组件设计模式（2）：高阶组件.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件设计模式（2）：高阶组件.html">
+            
+                    
+                    组件设计模式（2）：高阶组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.7" data-path="../React实战：设计模式和最佳实践/组件设计模式（3）：renderProps模式.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件设计模式（3）：renderProps模式.html">
+            
+                    
+                    组件设计模式（3）：renderProps模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.8" data-path="../React实战：设计模式和最佳实践/组件设计模式（4）：提供者模式.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件设计模式（4）：提供者模式.html">
+            
+                    
+                    组件设计模式（4）：提供者模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.9" data-path="../React实战：设计模式和最佳实践/组件设计模式（5）：组合组件.html">
+            
+                <a href="../React实战：设计模式和最佳实践/组件设计模式（5）：组合组件.html">
+            
+                    
+                    组件设计模式（5）：组合组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.10" data-path="../React实战：设计模式和最佳实践/React单元测试.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React单元测试.html">
+            
+                    
+                    React单元测试
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.11" data-path="../React实战：设计模式和最佳实践/React状态管理（1）：组件状态.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React状态管理（1）：组件状态.html">
+            
+                    
+                    React状态管理（1）：组件状态
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.12" data-path="../React实战：设计模式和最佳实践/React状态管理（2）：Redux使用模式.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React状态管理（2）：Redux使用模式.html">
+            
+                    
+                    React状态管理（2）：Redux使用模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.13" data-path="../React实战：设计模式和最佳实践/React状态管理（3）：Mobx使用模式.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React状态管理（3）：Mobx使用模式.html">
+            
+                    
+                    React状态管理（3）：Mobx使用模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.14" data-path="../React实战：设计模式和最佳实践/React状态管理（4）：不同方式对比.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React状态管理（4）：不同方式对比.html">
+            
+                    
+                    React状态管理（4）：不同方式对比
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.15" data-path="../React实战：设计模式和最佳实践/路由的魔法：ReactRouter.html">
+            
+                <a href="../React实战：设计模式和最佳实践/路由的魔法：ReactRouter.html">
+            
+                    
+                    路由的魔法：ReactRouter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.16" data-path="../React实战：设计模式和最佳实践/服务器端渲染（1）：基本套路.html">
+            
+                <a href="../React实战：设计模式和最佳实践/服务器端渲染（1）：基本套路.html">
+            
+                    
+                    服务器端渲染（1）：基本套路
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.17" data-path="../React实战：设计模式和最佳实践/服务器端渲染（2）：理解Next.js.html">
+            
+                <a href="../React实战：设计模式和最佳实践/服务器端渲染（2）：理解Next.js.html">
+            
+                    
+                    服务器端渲染（2）：理解Next.js
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.18" data-path="../React实战：设计模式和最佳实践/React的未来（1）：拥抱异步渲染.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React的未来（1）：拥抱异步渲染.html">
+            
+                    
+                    React的未来（1）：拥抱异步渲染
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.19" data-path="../React实战：设计模式和最佳实践/React的未来（2）：Suspense带来的异步操作革命.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React的未来（2）：Suspense带来的异步操作革命.html">
+            
+                    
+                    React的未来（2）：Suspense带来的异步操作革命
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.20" data-path="../React实战：设计模式和最佳实践/React的未来（3）：函数化的Hooks.html">
+            
+                <a href="../React实战：设计模式和最佳实践/React的未来（3）：函数化的Hooks.html">
+            
+                    
+                    React的未来（3）：函数化的Hooks
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.21" data-path="../React实战：设计模式和最佳实践/结语.html">
+            
+                <a href="../React实战：设计模式和最佳实践/结语.html">
+            
+                    
+                    结语
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" >
+            
+                <span>
+            
+                    
+                    Vue.js组件精讲
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.5.1" data-path="../Vue.js组件精讲/开篇：Vue.js的精髓——组件.html">
+            
+                <a href="../Vue.js组件精讲/开篇：Vue.js的精髓——组件.html">
+            
+                    
+                    开篇：Vue.js的精髓——组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.2" data-path="../Vue.js组件精讲/基础：Vue.js组件的三个API：prop、event、slot.html">
+            
+                <a href="../Vue.js组件精讲/基础：Vue.js组件的三个API：prop、event、slot.html">
+            
+                    
+                    基础：Vue.js 组件的三个 API：prop、event、slot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.3" data-path="../Vue.js组件精讲/组件的通信1：provide-inject.html">
+            
+                <a href="../Vue.js组件精讲/组件的通信1：provide-inject.html">
+            
+                    
+                    组件的通信 1：provide / inject
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.4" data-path="../Vue.js组件精讲/组件的通信2：派发与广播——自行实现dispatch和broadcast方法.html">
+            
+                <a href="../Vue.js组件精讲/组件的通信2：派发与广播——自行实现dispatch和broadcast方法.html">
+            
+                    
+                    组件的通信 2：派发与广播——自行实现 dispatch 和 broadcast 方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.5" data-path="../Vue.js组件精讲/实战1：具有数据校验功能的表单组件——Form.html">
+            
+                <a href="../Vue.js组件精讲/实战1：具有数据校验功能的表单组件——Form.html">
+            
+                    
+                    实战 1：具有数据校验功能的表单组件——Form
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.6" data-path="../Vue.js组件精讲/组件的通信3：找到任意组件实例——findComponents系列方法.html">
+            
+                <a href="../Vue.js组件精讲/组件的通信3：找到任意组件实例——findComponents系列方法.html">
+            
+                    
+                    组件的通信 3：找到任意组件实例——findComponents 系列方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.7" data-path="../Vue.js组件精讲/实战2：组合多选框组件——CheckboxGroup&Checkbox.html">
+            
+                <a href="../Vue.js组件精讲/实战2：组合多选框组件——CheckboxGroup&Checkbox.html">
+            
+                    
+                    实战 2：组合多选框组件——CheckboxGroup & Checkbox
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.8" data-path="../Vue.js组件精讲/Vue的构造器——extend与手动挂载——mount.html">
+            
+                <a href="../Vue.js组件精讲/Vue的构造器——extend与手动挂载——mount.html">
+            
+                    
+                    Vue 的构造器——extend 与手动挂载——$mount
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.9" data-path="../Vue.js组件精讲/实战3：动态渲染.vue文件的组件——Display.html">
+            
+                <a href="../Vue.js组件精讲/实战3：动态渲染.vue文件的组件——Display.html">
+            
+                    
+                    实战 3：动态渲染 .vue 文件的组件—— Display
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.10" data-path="../Vue.js组件精讲/实战4：全局提示组件——Alert.html">
+            
+                <a href="../Vue.js组件精讲/实战4：全局提示组件——Alert.html">
+            
+                    
+                    实战 4：全局提示组件——$Alert
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.11" data-path="../Vue.js组件精讲/更灵活的组件：Render函数与Functional-Render.html">
+            
+                <a href="../Vue.js组件精讲/更灵活的组件：Render函数与Functional-Render.html">
+            
+                    
+                    更灵活的组件：Render 函数与 Functional Render
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.12" data-path="../Vue.js组件精讲/实战5：可用Render自定义列的表格组件——Table.html">
+            
+                <a href="../Vue.js组件精讲/实战5：可用Render自定义列的表格组件——Table.html">
+            
+                    
+                    实战 5：可用 Render 自定义列的表格组件——Table
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.13" data-path="../Vue.js组件精讲/实战6：可用slot-scope自定义列的表格组件——Table.html">
+            
+                <a href="../Vue.js组件精讲/实战6：可用slot-scope自定义列的表格组件——Table.html">
+            
+                    
+                    实战 6：可用 slot-scope 自定义列的表格组件——Table
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.14" data-path="../Vue.js组件精讲/递归组件与动态组件.html">
+            
+                <a href="../Vue.js组件精讲/递归组件与动态组件.html">
+            
+                    
+                    递归组件与动态组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.15" data-path="../Vue.js组件精讲/实战7：树形控件——Tree.html">
+            
+                <a href="../Vue.js组件精讲/实战7：树形控件——Tree.html">
+            
+                    
+                    实战 7：树形控件——Tree
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.16" data-path="../Vue.js组件精讲/拓展：Vue.js容易忽略的API详解.html">
+            
+                <a href="../Vue.js组件精讲/拓展：Vue.js容易忽略的API详解.html">
+            
+                    
+                    拓展：Vue.js 容易忽略的 API 详解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.17" data-path="../Vue.js组件精讲/拓展：Vue.js面试、常见问题答疑.html">
+            
+                <a href="../Vue.js组件精讲/拓展：Vue.js面试、常见问题答疑.html">
+            
+                    
+                    拓展：Vue.js 面试、常见问题答疑
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.18" data-path="../Vue.js组件精讲/拓展：如何做好一个开源项目（上篇）.html">
+            
+                <a href="../Vue.js组件精讲/拓展：如何做好一个开源项目（上篇）.html">
+            
+                    
+                    拓展：如何做好一个开源项目（上篇）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.19" data-path="../Vue.js组件精讲/拓展：如何做好一个开源项目（下篇）.html">
+            
+                <a href="../Vue.js组件精讲/拓展：如何做好一个开源项目（下篇）.html">
+            
+                    
+                    拓展：如何做好一个开源项目（下篇）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.20" data-path="../Vue.js组件精讲/写在最后.html">
+            
+                <a href="../Vue.js组件精讲/写在最后.html">
+            
+                    
+                    写在最后
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" >
+            
+                <span>
+            
+                    
+                    重学前端
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.6.1" >
+            
+                <span>
+            
+                    
+                    开篇词+学习路线+架构图 (3讲)
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.6.1.1" data-path="../重学前端/开篇词-从今天起，重新理解前端.html">
+            
+                <a href="../重学前端/开篇词-从今天起，重新理解前端.html">
+            
+                    
+                    开篇词 | 从今天起，重新理解前端
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.1.2" data-path="../重学前端/明确你的前端学习路线与方法.html">
+            
+                <a href="../重学前端/明确你的前端学习路线与方法.html">
+            
+                    
+                    明确你的前端学习路线与方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.1.3" data-path="../重学前端/列一份前端知识架构图.html">
+            
+                <a href="../重学前端/列一份前端知识架构图.html">
+            
+                    
+                    列一份前端知识架构图
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2" >
+            
+                <span>
+            
+                    
+                    模块一：JavaScript (15讲)
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.6.2.1" data-path="../重学前端/JavaScript类型：关于类型，有哪些你不知道的细节？.html">
+            
+                <a href="../重学前端/JavaScript类型：关于类型，有哪些你不知道的细节？.html">
+            
+                    
+                    JavaScript类型：关于类型，有哪些你不知道的细节？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.2" data-path="../重学前端/JavaScript对象：面向对象还是基于对象？.html">
+            
+                <a href="../重学前端/JavaScript对象：面向对象还是基于对象？.html">
+            
+                    
+                    JavaScript对象：面向对象还是基于对象？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.3" data-path="../重学前端/JavaScript对象：我们真的需要模拟类吗？.html">
+            
+                <a href="../重学前端/JavaScript对象：我们真的需要模拟类吗？.html">
+            
+                    
+                    JavaScript对象：我们真的需要模拟类吗？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.4" data-path="../重学前端/JavaScript对象：你知道全部的对象分类吗？.html">
+            
+                <a href="../重学前端/JavaScript对象：你知道全部的对象分类吗？.html">
+            
+                    
+                    JavaScript对象：你知道全部的对象分类吗？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.5" data-path="../重学前端/JavaScript执行（一）：Promise里的代码为什么比setTimeout先执行？.html">
+            
+                <a href="../重学前端/JavaScript执行（一）：Promise里的代码为什么比setTimeout先执行？.html">
+            
+                    
+                    JavaScript执行（一）：Promise里的代码为什么比setTimeout先执行？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.6" data-path="../重学前端/JavaScript执行（二）：闭包和执行上下文到底是怎么回事？.html">
+            
+                <a href="../重学前端/JavaScript执行（二）：闭包和执行上下文到底是怎么回事？.html">
+            
+                    
+                    JavaScript执行（二）：闭包和执行上下文到底是怎么回事？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.7" data-path="../重学前端/JavaScript执行（三）：你知道现在有多少种函数吗？.html">
+            
+                <a href="../重学前端/JavaScript执行（三）：你知道现在有多少种函数吗？.html">
+            
+                    
+                    JavaScript执行（三）：你知道现在有多少种函数吗？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.2.8" data-path="../重学前端/JavaScript执行（四）：try里面放return，finally还会执行吗？.html">
+            
+                <a href="../重学前端/JavaScript执行（四）：try里面放return，finally还会执行吗？.html">
+            
+                    
+                    JavaScript执行（四）：try里面放return，finally还会执行吗？
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.3" >
+            
+                <span>
+            
+                    
+                    模块二：HTML和CSS (16讲)
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.6.3.1" data-path="../重学前端/HTML语义：div和span不是够用了吗？.html">
+            
+                <a href="../重学前端/HTML语义：div和span不是够用了吗？.html">
+            
+                    
+                    HTML语义：div和span不是够用了吗？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.3.2" data-path="../重学前端/HTML语义：如何运用语义类标签来呈现Wiki网页？.html">
+            
+                <a href="../重学前端/HTML语义：如何运用语义类标签来呈现Wiki网页？.html">
+            
+                    
+                    HTML语义：如何运用语义类标签来呈现Wiki网页？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.3.3" data-path="../重学前端/CSS语法：除了属性和选择器，你还需要知道这些带@的规则.html">
+            
+                <a href="../重学前端/CSS语法：除了属性和选择器，你还需要知道这些带@的规则.html">
+            
+                    
+                    CSS语法：除了属性和选择器，你还需要知道这些带@的规则
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.3.4" data-path="../重学前端/HTML元信息类标签：你知道head里一共能写哪几种标签吗？.html">
+            
+                <a href="../重学前端/HTML元信息类标签：你知道head里一共能写哪几种标签吗？.html">
+            
+                    
+                    HTML元信息类标签：你知道head里一共能写哪几种标签吗？
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.4" >
+            
+                <span>
+            
+                    
+                    模块三：浏览器实现原理与API (9讲)
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.6.4.1" data-path="../重学前端/浏览器：一个浏览器是如何工作的？（阶段一）.html">
+            
+                <a href="../重学前端/浏览器：一个浏览器是如何工作的？（阶段一）.html">
+            
+                    
+                    浏览器：一个浏览器是如何工作的？（阶段一）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.4.2" data-path="../重学前端/浏览器：一个浏览器是如何工作的？（阶段二）.html">
+            
+                <a href="../重学前端/浏览器：一个浏览器是如何工作的？（阶段二）.html">
+            
+                    
+                    浏览器：一个浏览器是如何工作的？（阶段二）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.4.3" data-path="../重学前端/浏览器：一个浏览器是如何工作的（阶段三）.html">
+            
+                <a href="../重学前端/浏览器：一个浏览器是如何工作的（阶段三）.html">
+            
+                    
+                    浏览器：一个浏览器是如何工作的（阶段三）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.4.4" data-path="../重学前端/浏览器：一个浏览器是如何工作的？（阶段四）.html">
+            
+                <a href="../重学前端/浏览器：一个浏览器是如何工作的？（阶段四）.html">
+            
+                    
+                    浏览器：一个浏览器是如何工作的？（阶段四）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.4.5" data-path="../重学前端/浏览器：一个浏览器是如何工作的？（阶段五）.html">
+            
+                <a href="../重学前端/浏览器：一个浏览器是如何工作的？（阶段五）.html">
+            
+                    
+                    浏览器：一个浏览器是如何工作的？（阶段五）
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.5" >
+            
+                <span>
+            
+                    
+                    模块四：前端综合应用 (5讲)
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.6.5.1" data-path="../重学前端/性能：前端的性能到底对业务数据有多大的影响？.html">
+            
+                <a href="../重学前端/性能：前端的性能到底对业务数据有多大的影响？.html">
+            
+                    
+                    性能：前端的性能到底对业务数据有多大的影响？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.5.2" data-path="../重学前端/工具链：什么样的工具链才能提升团队效率？.html">
+            
+                <a href="../重学前端/工具链：什么样的工具链才能提升团队效率？.html">
+            
+                    
+                    工具链：什么样的工具链才能提升团队效率？
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.6" >
+            
+                <span>
+            
+                    
+                    特别加餐 (8讲)
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6.7" >
+            
+                <span>
+            
+                    
+                    尾声 (2讲)
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" >
+            
+                <span>
+            
+                    
+                    中高级前端必备知识
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.7.1" data-path="../中高级前端必备知识/上篇.html">
+            
+                <a href="../中高级前端必备知识/上篇.html">
+            
+                    
+                    上篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7.2" data-path="../中高级前端必备知识/中篇.html">
+            
+                <a href="../中高级前端必备知识/中篇.html">
+            
+                    
+                    中篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7.3" data-path="../中高级前端必备知识/下篇.html">
+            
+                <a href="../中高级前端必备知识/下篇.html">
+            
+                    
+                    下篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" >
+            
+                <span>
+            
+                    
+                    零基础学透TypeScript
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.8.1" data-path="../零基础学透TypeScript/前言.html">
+            
+                <a href="../零基础学透TypeScript/前言.html">
+            
+                    
+                    前言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.2" data-path="../零基础学透TypeScript/01-导读：Hello~TypeScript.html">
+            
+                <a href="../零基础学透TypeScript/01-导读：Hello~TypeScript.html">
+            
+                    
+                    01-导读：Hello~TypeScript
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.3" data-path="../零基础学透TypeScript/02-TypeScript应该怎么学.html">
+            
+                <a href="../零基础学透TypeScript/02-TypeScript应该怎么学.html">
+            
+                    
+                    02-TypeScript应该怎么学
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.4" data-path="../零基础学透TypeScript/03-VSCode揭秘和搭建开发环境.html">
+            
+                <a href="../零基础学透TypeScript/03-VSCode揭秘和搭建开发环境.html">
+            
+                    
+                    03-VSCode揭秘和搭建开发环境
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.5" data-path="../零基础学透TypeScript/04-八个JS中你见过的类型.html">
+            
+                <a href="../零基础学透TypeScript/04-八个JS中你见过的类型.html">
+            
+                    
+                    04-八个JS中你见过的类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.6" data-path="../零基础学透TypeScript/05-TS中补充的六个类型.html">
+            
+                <a href="../零基础学透TypeScript/05-TS中补充的六个类型.html">
+            
+                    
+                    05-TS中补充的六个类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.7" data-path="../零基础学透TypeScript/06-Symbol-ES6新基础类型.html">
+            
+                <a href="../零基础学透TypeScript/06-Symbol-ES6新基础类型.html">
+            
+                    
+                    06-Symbol-ES6新基础类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.8" data-path="../零基础学透TypeScript/07-深入学习枚举.html">
+            
+                <a href="../零基础学透TypeScript/07-深入学习枚举.html">
+            
+                    
+                    07-深入学习枚举
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.9" data-path="../零基础学透TypeScript/08-使用类型断言达到预期.html">
+            
+                <a href="../零基础学透TypeScript/08-使用类型断言达到预期.html">
+            
+                    
+                    08-使用类型断言达到预期
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.10" data-path="../零基础学透TypeScript/09-使用接口定义几乎任意结构.html">
+            
+                <a href="../零基础学透TypeScript/09-使用接口定义几乎任意结构.html">
+            
+                    
+                    09-使用接口定义几乎任意结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.11" data-path="../零基础学透TypeScript/10-接口的高阶用法.html">
+            
+                <a href="../零基础学透TypeScript/10-接口的高阶用法.html">
+            
+                    
+                    10-接口的高阶用法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.12" data-path="../零基础学透TypeScript/11-为函数和函数参数定义类型.html">
+            
+                <a href="../零基础学透TypeScript/11-为函数和函数参数定义类型.html">
+            
+                    
+                    11-为函数和函数参数定义类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.13" data-path="../零基础学透TypeScript/12-使用泛型拯救你的any.html">
+            
+                <a href="../零基础学透TypeScript/12-使用泛型拯救你的any.html">
+            
+                    
+                    12-使用泛型拯救你的any
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.14" data-path="../零基础学透TypeScript/13-TS中的类，小心它与ES标准的差异.html">
+            
+                <a href="../零基础学透TypeScript/13-TS中的类，小心它与ES标准的差异.html">
+            
+                    
+                    13-TS中的类，小心它与ES标准的差异
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.15" data-path="../零基础学透TypeScript/14-类型推论，看TS有多懂你.html">
+            
+                <a href="../零基础学透TypeScript/14-类型推论，看TS有多懂你.html">
+            
+                    
+                    14-类型推论，看TS有多懂你
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.16" data-path="../零基础学透TypeScript/15-类型兼容性，开放心态满足灵活的JS.html">
+            
+                <a href="../零基础学透TypeScript/15-类型兼容性，开放心态满足灵活的JS.html">
+            
+                    
+                    15-类型兼容性，开放心态满足灵活的JS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8.17" data-path="../零基础学透TypeScript/16-使用类型保护让TS更聪明.html">
+            
+                <a href="../零基础学透TypeScript/16-使用类型保护让TS更聪明.html">
+            
+                    
+                    16-使用类型保护让TS更聪明
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">其它</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../../其它/推荐网站.html">
+            
+                <a href="../../其它/推荐网站.html">
+            
+                    
+                    推荐网站
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../../其它/文档.html">
+            
+                <a href="../../其它/文档.html">
+            
+                    
+                    文档
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >渲染篇4：千方百计——EventLoop与异步更新策略</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x5343;&#x65B9;&#x767E;&#x8BA1;&#x2014;&#x2014;event-loop-&#x4E0E;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;">&#x5343;&#x65B9;&#x767E;&#x8BA1;&#x2014;&#x2014;Event Loop &#x4E0E;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;</h1>
+<p>Vue &#x548C; React &#x90FD;&#x5B9E;&#x73B0;&#x4E86;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;&#x3002;&#x867D;&#x7136;&#x5B9E;&#x73B0;&#x7684;&#x65B9;&#x5F0F;&#x4E0D;&#x5C3D;&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x90FD;&#x8FBE;&#x5230;&#x4E86;&#x51CF;&#x5C11; DOM &#x64CD;&#x4F5C;&#x3001;&#x907F;&#x514D;&#x8FC7;&#x5EA6;&#x6E32;&#x67D3;&#x7684;&#x76EE;&#x7684;&#x3002;&#x901A;&#x8FC7;&#x7814;&#x7A76;&#x6846;&#x67B6;&#x7684;&#x8FD0;&#x884C;&#x673A;&#x5236;&#xFF0C;&#x5176;&#x8BBE;&#x8BA1;&#x601D;&#x8DEF;&#x5C06;&#x6DF1;&#x5316;&#x6211;&#x4EEC;&#x5BF9; DOM &#x4F18;&#x5316;&#x7684;&#x7406;&#x89E3;&#xFF0C;&#x5176;&#x5B9E;&#x73B0;&#x624B;&#x6CD5;&#x5C06;&#x62D3;&#x5BBD;&#x6211;&#x4EEC;&#x5BF9; DOM &#x5B9E;&#x8DF5;&#x7684;&#x8BA4;&#x77E5;&#x3002;</p>
+<p>&#x672C;&#x8282;&#x6211;&#x4EEC;&#x5C06;&#x57FA;&#x4E8E; Event Loop &#x673A;&#x5236;&#xFF0C;&#x5BF9; Vue &#x7684;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;&#x4F5C;&#x63A2;&#x8BA8;&#x3002;</p>
+<h3 id="&#x524D;&#x7F6E;&#x77E5;&#x8BC6;&#xFF1A;event-loop-&#x4E2D;&#x7684;&#x6E32;&#x67D3;&#x65F6;&#x673A;">&#x524D;&#x7F6E;&#x77E5;&#x8BC6;&#xFF1A;Event Loop &#x4E2D;&#x7684;&#x201C;&#x6E32;&#x67D3;&#x65F6;&#x673A;&#x201D;</h3>
+<hr>
+<p>&#x641E;&#x61C2; Event Loop&#xFF0C;&#x662F;&#x7406;&#x89E3; Vue &#x5BF9; DOM &#x64CD;&#x4F5C;&#x4F18;&#x5316;&#x7684;&#x7B2C;&#x4E00;&#x6B65;&#x3002;</p>
+<h4 id="micro-task-&#x4E0E;-macro-task">Micro-Task &#x4E0E; Macro-Task</h4>
+<p>&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;&#x4E2D;&#x7684;&#x5F02;&#x6B65;&#x961F;&#x5217;&#x6709;&#x4E24;&#x79CD;&#xFF1A;macro&#xFF08;&#x5B8F;&#x4EFB;&#x52A1;&#xFF09;&#x961F;&#x5217;&#x548C; micro&#xFF08;&#x5FAE;&#x4EFB;&#x52A1;&#xFF09;&#x961F;&#x5217;&#x3002;</p>
+<p>&#x5E38;&#x89C1;&#x7684; macro-task &#x6BD4;&#x5982;&#xFF1A; setTimeout&#x3001;setInterval&#x3001; setImmediate&#x3001;script&#xFF08;&#x6574;&#x4F53;&#x4EE3;&#x7801;&#xFF09;&#x3001; I/O &#x64CD;&#x4F5C;&#x3001;UI &#x6E32;&#x67D3;&#x7B49;&#x3002;
+&#x5E38;&#x89C1;&#x7684; micro-task &#x6BD4;&#x5982;: process.nextTick&#x3001;Promise&#x3001;MutationObserver &#x7B49;&#x3002;</p>
+<h4 id="event-loop-&#x8FC7;&#x7A0B;&#x89E3;&#x6790;">Event Loop &#x8FC7;&#x7A0B;&#x89E3;&#x6790;</h4>
+<p>&#x57FA;&#x4E8E;&#x5BF9; micro &#x548C; macro &#x7684;&#x8BA4;&#x77E5;&#xFF0C;&#x6211;&#x4EEC;&#x6765;&#x8D70;&#x4E00;&#x904D;&#x5B8C;&#x6574;&#x7684;&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;&#x8FC7;&#x7A0B;&#x3002;</p>
+<p>&#x4E00;&#x4E2A;&#x5B8C;&#x6574;&#x7684; Event Loop &#x8FC7;&#x7A0B;&#xFF0C;&#x53EF;&#x4EE5;&#x6982;&#x62EC;&#x4E3A;&#x4EE5;&#x4E0B;&#x9636;&#x6BB5;&#xFF1A;</p>
+<ul>
+<li><p>&#x521D;&#x59CB;&#x72B6;&#x6001;&#xFF1A;&#x8C03;&#x7528;&#x6808;&#x7A7A;&#x3002;micro &#x961F;&#x5217;&#x7A7A;&#xFF0C;macro &#x961F;&#x5217;&#x91CC;&#x6709;&#x4E14;&#x53EA;&#x6709;&#x4E00;&#x4E2A; script &#x811A;&#x672C;&#xFF08;&#x6574;&#x4F53;&#x4EE3;&#x7801;&#xFF09;&#x3002;</p>
+</li>
+<li><p>&#x5168;&#x5C40;&#x4E0A;&#x4E0B;&#x6587;&#xFF08;script &#x6807;&#x7B7E;&#xFF09;&#x88AB;&#x63A8;&#x5165;&#x8C03;&#x7528;&#x6808;&#xFF0C;&#x540C;&#x6B65;&#x4EE3;&#x7801;&#x6267;&#x884C;&#x3002;&#x5728;&#x6267;&#x884C;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x901A;&#x8FC7;&#x5BF9;&#x4E00;&#x4E9B;&#x63A5;&#x53E3;&#x7684;&#x8C03;&#x7528;&#xFF0C;&#x53EF;&#x4EE5;&#x4EA7;&#x751F;&#x65B0;&#x7684; macro-task &#x4E0E; micro-task&#xFF0C;&#x5B83;&#x4EEC;&#x4F1A;&#x5206;&#x522B;&#x88AB;&#x63A8;&#x5165;&#x5404;&#x81EA;&#x7684;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#x91CC;&#x3002;&#x540C;&#x6B65;&#x4EE3;&#x7801;&#x6267;&#x884C;&#x5B8C;&#x4E86;&#xFF0C;script &#x811A;&#x672C;&#x4F1A;&#x88AB;&#x79FB;&#x51FA; macro &#x961F;&#x5217;&#xFF0C;<strong>&#x8FD9;&#x4E2A;&#x8FC7;&#x7A0B;&#x672C;&#x8D28;&#x4E0A;&#x662F;&#x961F;&#x5217;&#x7684; macro-task &#x7684;&#x6267;&#x884C;&#x548C;&#x51FA;&#x961F;&#x7684;&#x8FC7;&#x7A0B;</strong>&#x3002;</p>
+</li>
+<li><p>&#x4E0A;&#x4E00;&#x6B65;&#x6211;&#x4EEC;&#x51FA;&#x961F;&#x7684;&#x662F;&#x4E00;&#x4E2A; macro-task&#xFF0C;&#x8FD9;&#x4E00;&#x6B65;&#x6211;&#x4EEC;&#x5904;&#x7406;&#x7684;&#x662F; micro-task&#x3002;&#x4F46;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF1A;&#x5F53; macro-task &#x51FA;&#x961F;&#x65F6;&#xFF0C;&#x4EFB;&#x52A1;&#x662F;&#x4E00;&#x4E2A;&#x4E00;&#x4E2A;&#x6267;&#x884C;&#x7684;&#xFF1B;&#x800C; micro-task &#x51FA;&#x961F;&#x65F6;&#xFF0C;&#x4EFB;&#x52A1;&#x662F;<strong>&#x4E00;&#x961F;&#x4E00;&#x961F;</strong>&#x6267;&#x884C;&#x7684;&#xFF08;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF09;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x5904;&#x7406; micro &#x961F;&#x5217;&#x8FD9;&#x4E00;&#x6B65;&#xFF0C;&#x4F1A;&#x9010;&#x4E2A;&#x6267;&#x884C;&#x961F;&#x5217;&#x4E2D;&#x7684;&#x4EFB;&#x52A1;&#x5E76;&#x628A;&#x5B83;&#x51FA;&#x961F;&#xFF0C;&#x76F4;&#x5230;&#x961F;&#x5217;&#x88AB;&#x6E05;&#x7A7A;&#x3002;
+<img src="https://img1.yixinfinance.com/wiki/images/1662fc9d8bf609a6" alt=""></p>
+</li>
+<li><p><strong>&#x6267;&#x884C;&#x6E32;&#x67D3;&#x64CD;&#x4F5C;&#xFF0C;&#x66F4;&#x65B0;&#x754C;&#x9762;</strong>&#xFF08;&#x6572;&#x9ED1;&#x677F;&#x5212;&#x91CD;&#x70B9;&#xFF09;&#x3002;</p>
+</li>
+<li><p>&#x68C0;&#x67E5;&#x662F;&#x5426;&#x5B58;&#x5728; Web worker &#x4EFB;&#x52A1;&#xFF0C;&#x5982;&#x679C;&#x6709;&#xFF0C;&#x5219;&#x5BF9;&#x5176;&#x8FDB;&#x884C;&#x5904;&#x7406; &#x3002;</p>
+</li>
+</ul>
+<p>&#xFF08;&#x4E0A;&#x8FF0;&#x8FC7;&#x7A0B;&#x5FAA;&#x73AF;&#x5F80;&#x590D;&#xFF0C;&#x76F4;&#x5230;&#x4E24;&#x4E2A;&#x961F;&#x5217;&#x90FD;&#x6E05;&#x7A7A;&#xFF09;</p>
+<p>&#x6211;&#x4EEC;&#x603B;&#x7ED3;&#x4E00;&#x4E0B;&#xFF0C;&#x6BCF;&#x4E00;&#x6B21;&#x5FAA;&#x73AF;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x8FD9;&#x6837;&#x7684;&#x8FC7;&#x7A0B;&#xFF1A;</p>
+<p><img src="https://img1.yixinfinance.com/wiki/images/1662ff57ebe7a73f" alt=""></p>
+<h4 id="&#x6E32;&#x67D3;&#x7684;&#x65F6;&#x673A;">&#x6E32;&#x67D3;&#x7684;&#x65F6;&#x673A;</h4>
+<p>&#x5927;&#x5BB6;&#x73B0;&#x5728;&#x601D;&#x8003;&#x4E00;&#x4E2A;&#x8FD9;&#x6837;&#x7684;&#x95EE;&#x9898;&#xFF1A;&#x5047;&#x5982;&#x6211;&#x60F3;&#x8981;&#x5728;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x91CC;&#x8FDB;&#x884C;DOM&#x66F4;&#x65B0;&#xFF0C;&#x6211;&#x8BE5;&#x628A;&#x5B83;&#x5305;&#x88C5;&#x6210; micro &#x8FD8;&#x662F; macro &#x5462;&#xFF1F;</p>
+<p>&#x6211;&#x4EEC;&#x5148;&#x5047;&#x8BBE;&#x5B83;&#x662F;&#x4E00;&#x4E2A; macro &#x4EFB;&#x52A1;&#xFF0C;&#x6BD4;&#x5982;&#x6211;&#x5728; script &#x811A;&#x672C;&#x4E2D;&#x7528; setTimeout &#x6765;&#x5904;&#x7406;&#x5B83;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// task&#x662F;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x4FEE;&#x6539;DOM&#x7684;&#x56DE;&#x8C03;</span>
+setTimeout(task, <span class="hljs-number">0</span>)
+</code></pre>
+<p>&#x73B0;&#x5728; task &#x88AB;&#x63A8;&#x5165;&#x7684; macro &#x961F;&#x5217;&#x3002;&#x4F46;&#x56E0;&#x4E3A; script &#x811A;&#x672C;&#x672C;&#x8EAB;&#x662F;&#x4E00;&#x4E2A; macro &#x4EFB;&#x52A1;&#xFF0C;&#x6240;&#x4EE5;&#x672C;&#x6B21;&#x6267;&#x884C;&#x5B8C; script &#x811A;&#x672C;&#x4E4B;&#x540E;&#xFF0C;&#x4E0B;&#x4E00;&#x4E2A;&#x6B65;&#x9AA4;&#x5C31;&#x8981;&#x53BB;&#x5904;&#x7406; micro &#x961F;&#x5217;&#x4E86;&#xFF0C;&#x518D;&#x5F80;&#x4E0B;&#x5C31;&#x53BB;&#x6267;&#x884C;&#x4E86;&#x4E00;&#x6B21; render&#xFF0C;&#x5BF9;&#x4E0D;&#x5BF9;&#xFF1F;</p>
+<p>&#x4F46;&#x672C;&#x6B21;render&#x6211;&#x7684;&#x76EE;&#x6807;task&#x5176;&#x5B9E;&#x5E76;&#x6CA1;&#x6709;&#x6267;&#x884C;&#xFF0C;&#x60F3;&#x8981;&#x4FEE;&#x6539;&#x7684;DOM&#x4E5F;&#x6CA1;&#x6709;&#x4FEE;&#x6539;&#xFF0C;&#x56E0;&#x6B64;&#x8FD9;&#x4E00;&#x6B21;&#x7684;render&#x5176;&#x5B9E;&#x662F;&#x4E00;&#x6B21;&#x65E0;&#x6548;&#x7684;render&#x3002;</p>
+<p>macro &#x4E0D; ok&#xFF0C;&#x6211;&#x4EEC;&#x8F6C;&#x5411; micro &#x8BD5;&#x8BD5;&#x770B;&#x3002;&#x6211;&#x7528; Promise &#x6765;&#x628A; task &#x5305;&#x88C5;&#x6210;&#x662F;&#x4E00;&#x4E2A; micro &#x4EFB;&#x52A1;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-built_in">Promise</span>.resolve().then(task)
+</code></pre>
+<p>&#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x7ED3;&#x675F;&#x4E86;&#x5BF9; script &#x811A;&#x672C;&#x7684;&#x6267;&#x884C;&#xFF0C;&#x662F;&#x4E0D;&#x662F;&#x7D27;&#x63A5;&#x7740;&#x5C31;&#x53BB;&#x5904;&#x7406; micro-task &#x961F;&#x5217;&#x4E86;&#xFF1F;micro-task &#x5904;&#x7406;&#x5B8C;&#xFF0C;DOM &#x4FEE;&#x6539;&#x597D;&#x4E86;&#xFF0C;&#x7D27;&#x63A5;&#x7740;&#x5C31;&#x53EF;&#x4EE5;&#x8D70; render &#x6D41;&#x7A0B;&#x4E86;&#x2014;&#x2014;&#x4E0D;&#x9700;&#x8981;&#x518D;&#x6D88;&#x8017;&#x591A;&#x4F59;&#x7684;&#x4E00;&#x6B21;&#x6E32;&#x67D3;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x518D;&#x7B49;&#x5F85;&#x4E00;&#x8F6E;&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;&#xFF0C;&#x76F4;&#x63A5;&#x4E3A;&#x7528;&#x6237;&#x5448;&#x73B0;&#x6700;&#x5373;&#x65F6;&#x7684;&#x66F4;&#x65B0;&#x7ED3;&#x679C;&#x3002;</p>
+<p>&#x56E0;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x66F4;&#x65B0; DOM &#x7684;&#x65F6;&#x95F4;&#x70B9;&#xFF0C;&#x5E94;&#x8BE5;&#x5C3D;&#x53EF;&#x80FD;&#x9760;&#x8FD1;&#x6E32;&#x67D3;&#x7684;&#x65F6;&#x673A;&#x3002;<strong>&#x5F53;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5728;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x4E2D;&#x5B9E;&#x73B0; DOM &#x4FEE;&#x6539;&#x65F6;&#xFF0C;&#x628A;&#x5B83;&#x5305;&#x88C5;&#x6210; micro &#x4EFB;&#x52A1;&#x662F;&#x76F8;&#x5BF9;&#x660E;&#x667A;&#x7684;&#x9009;&#x62E9;</strong>&#x3002;</p>
+<h3 id="&#x751F;&#x4EA7;&#x5B9E;&#x8DF5;&#xFF1A;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;&#x2014;&#x2014;&#x4EE5;-vue-&#x4E3A;&#x4F8B;">&#x751F;&#x4EA7;&#x5B9E;&#x8DF5;&#xFF1A;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;&#x2014;&#x2014;&#x4EE5; Vue &#x4E3A;&#x4F8B;</h3>
+<hr>
+<p>&#x4EC0;&#x4E48;&#x662F;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#xFF1F;</p>
+<p>&#x5F53;&#x6211;&#x4EEC;&#x4F7F;&#x7528; Vue &#x6216; React &#x63D0;&#x4F9B;&#x7684;&#x63A5;&#x53E3;&#x53BB;&#x66F4;&#x65B0;&#x6570;&#x636E;&#x65F6;&#xFF0C;&#x8FD9;&#x4E2A;&#x66F4;&#x65B0;&#x5E76;&#x4E0D;&#x4F1A;&#x7ACB;&#x5373;&#x751F;&#x6548;&#xFF0C;&#x800C;&#x662F;&#x4F1A;&#x88AB;&#x63A8;&#x5165;&#x5230;&#x4E00;&#x4E2A;&#x961F;&#x5217;&#x91CC;&#x3002;&#x5F85;&#x5230;&#x9002;&#x5F53;&#x7684;&#x65F6;&#x673A;&#xFF0C;&#x961F;&#x5217;&#x4E2D;&#x7684;&#x66F4;&#x65B0;&#x4EFB;&#x52A1;&#x4F1A;&#x88AB;<strong>&#x6279;&#x91CF;&#x89E6;&#x53D1;</strong>&#x3002;&#x8FD9;&#x5C31;&#x662F;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x3002;</p>
+<p>&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x53EF;&#x4EE5;&#x5E2E;&#x52A9;&#x6211;&#x4EEC;&#x907F;&#x514D;&#x8FC7;&#x5EA6;&#x6E32;&#x67D3;&#xFF0C;&#x662F;&#x6211;&#x4EEC;&#x4E0A;&#x8282;&#x63D0;&#x5230;&#x7684;&#x201C;&#x8BA9; JS &#x4E3A; DOM &#x5206;&#x538B;&#x201D;&#x7684;&#x5178;&#x8303;&#x4E4B;&#x4E00;&#x3002;</p>
+<h4 id="&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7684;&#x4F18;&#x8D8A;&#x6027;">&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7684;&#x4F18;&#x8D8A;&#x6027;</h4>
+<p>&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7684;&#x7279;&#x6027;&#x5728;&#x4E8E;&#x5B83;<strong>&#x53EA;&#x770B;&#x7ED3;&#x679C;</strong>&#xFF0C;&#x56E0;&#x6B64;&#x6E32;&#x67D3;&#x5F15;&#x64CE;<strong>&#x4E0D;&#x9700;&#x8981;&#x4E3A;&#x8FC7;&#x7A0B;&#x4E70;&#x5355;</strong>&#x3002;</p>
+<p>&#x6700;&#x5178;&#x578B;&#x7684;&#x4F8B;&#x5B50;&#xFF0C;&#x6BD4;&#x5982;&#x6709;&#x65F6;&#x6211;&#x4EEC;&#x4F1A;&#x9047;&#x5230;&#x8FD9;&#x6837;&#x7684;&#x60C5;&#x51B5;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x4EFB;&#x52A1;&#x4E00;</span>
+<span class="hljs-keyword">this</span>.content = <span class="hljs-string">&apos;&#x7B2C;&#x4E00;&#x6B21;&#x6D4B;&#x8BD5;&apos;</span>
+<span class="hljs-comment">// &#x4EFB;&#x52A1;&#x4E8C;</span>
+<span class="hljs-keyword">this</span>.content = <span class="hljs-string">&apos;&#x7B2C;&#x4E8C;&#x6B21;&#x6D4B;&#x8BD5;&apos;</span>
+<span class="hljs-comment">// &#x4EFB;&#x52A1;&#x4E09;</span>
+<span class="hljs-keyword">this</span>.content = <span class="hljs-string">&apos;&#x7B2C;&#x4E09;&#x6B21;&#x6D4B;&#x8BD5;&apos;</span>
+</code></pre>
+<p>&#x6211;&#x4EEC;&#x5728;&#x4E09;&#x4E2A;&#x66F4;&#x65B0;&#x4EFB;&#x52A1;&#x4E2D;&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x72B6;&#x6001;&#x4FEE;&#x6539;&#x4E86;&#x4E09;&#x6B21;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x91C7;&#x53D6;&#x4F20;&#x7EDF;&#x7684;&#x540C;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x8981;&#x64CD;&#x4F5C;&#x4E09;&#x6B21; DOM&#x3002;&#x4F46;&#x672C;&#x8D28;&#x4E0A;&#x9700;&#x8981;&#x5448;&#x73B0;&#x7ED9;&#x7528;&#x6237;&#x7684;&#x76EE;&#x6807;&#x5185;&#x5BB9;&#x5176;&#x5B9E;&#x53EA;&#x662F;&#x7B2C;&#x4E09;&#x6B21;&#x7684;&#x7ED3;&#x679C;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x53EA;&#x6709;&#x7B2C;&#x4E09;&#x6B21;&#x7684;&#x64CD;&#x4F5C;&#x662F;&#x6709;&#x610F;&#x4E49;&#x7684;&#x2014;&#x2014;&#x6211;&#x4EEC;&#x767D;&#x767D;&#x6D6A;&#x8D39;&#x4E86;&#x4E24;&#x6B21;&#x8BA1;&#x7B97;&#x3002;</p>
+<p>&#x4F46;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x628A;&#x8FD9;&#x4E09;&#x4E2A;&#x4EFB;&#x52A1;&#x585E;&#x8FDB;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x961F;&#x5217;&#x91CC;&#xFF0C;&#x5B83;&#x4EEC;&#x4F1A;&#x5148;&#x5728; JS &#x7684;&#x5C42;&#x9762;&#x4E0A;&#x88AB;<strong>&#x6279;&#x91CF;&#x6267;&#x884C;&#x5B8C;&#x6BD5;</strong>&#x3002;&#x5F53;&#x6D41;&#x7A0B;&#x8D70;&#x5230;&#x6E32;&#x67D3;&#x8FD9;&#x4E00;&#x6B65;&#x65F6;&#xFF0C;&#x5B83;&#x4EC5;&#x4EC5;&#x9700;&#x8981;&#x9488;&#x5BF9;&#x6709;&#x610F;&#x4E49;&#x7684;&#x8BA1;&#x7B97;&#x7ED3;&#x679C;&#x64CD;&#x4F5C;&#x4E00;&#x6B21; DOM&#x2014;&#x2014;&#x8FD9;&#x5C31;&#x662F;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7684;&#x5999;&#x5904;&#x3002;</p>
+<h4 id="vue&#x72B6;&#x6001;&#x66F4;&#x65B0;&#x624B;&#x6CD5;&#xFF1A;nexttick">Vue&#x72B6;&#x6001;&#x66F4;&#x65B0;&#x624B;&#x6CD5;&#xFF1A;nextTick</h4>
+<p>Vue &#x6BCF;&#x6B21;&#x60F3;&#x8981;&#x66F4;&#x65B0;&#x4E00;&#x4E2A;&#x72B6;&#x6001;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x5148;&#x628A;&#x5B83;&#x8FD9;&#x4E2A;&#x66F4;&#x65B0;&#x64CD;&#x4F5C;&#x7ED9;&#x5305;&#x88C5;&#x6210;&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x64CD;&#x4F5C;&#x6D3E;&#x53D1;&#x51FA;&#x53BB;&#x3002;&#x8FD9;&#x4EF6;&#x4E8B;&#x60C5;&#xFF0C;&#x5728;&#x6E90;&#x7801;&#x4E2D;&#x662F;&#x7531;&#x4E00;&#x4E2A;&#x53EB;&#x505A; nextTick &#x7684;&#x51FD;&#x6570;&#x6765;&#x5B8C;&#x6210;&#x7684;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">nextTick</span> (<span class="hljs-params">cb?: Function, ctx?: Object</span>) </span>{
+  <span class="hljs-keyword">let</span> _resolve
+  callbacks.push(() =&gt; {
+    <span class="hljs-keyword">if</span> (cb) {
+      <span class="hljs-keyword">try</span> {
+        cb.call(ctx)
+      } <span class="hljs-keyword">catch</span> (e) {
+        handleError(e, ctx, <span class="hljs-string">&apos;nextTick&apos;</span>)
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_resolve) {
+      _resolve(ctx)
+    }
+  })
+  <span class="hljs-comment">// &#x68C0;&#x67E5;&#x4E0A;&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#xFF08;&#x5373;&#x540D;&#x4E3A;callbacks&#x7684;&#x4EFB;&#x52A1;&#x6570;&#x7EC4;&#xFF09;&#x662F;&#x5426;&#x6D3E;&#x53D1;&#x548C;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x4E86;&#x3002;pending&#x6B64;&#x5904;&#x76F8;&#x5F53;&#x4E8E;&#x4E00;&#x4E2A;&#x9501;</span>
+  <span class="hljs-keyword">if</span> (!pending) {
+    <span class="hljs-comment">// &#x82E5;&#x4E0A;&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#x5DF2;&#x7ECF;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#xFF0C;&#x5219;&#x5C06;pending&#x8BBE;&#x5B9A;&#x4E3A;true&#xFF08;&#x628A;&#x9501;&#x9501;&#x4E0A;&#xFF09;</span>
+    pending = <span class="hljs-literal">true</span>
+    <span class="hljs-comment">// &#x662F;&#x5426;&#x8981;&#x6C42;&#x4E00;&#x5B9A;&#x8981;&#x6D3E;&#x53D1;&#x4E3A;macro&#x4EFB;&#x52A1;</span>
+    <span class="hljs-keyword">if</span> (useMacroTask) {
+      macroTimerFunc()
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// &#x5982;&#x679C;&#x4E0D;&#x8BF4;&#x660E;&#x4E00;&#x5B9A;&#x8981;macro &#x4F60;&#x4EEC;&#x5C31;&#x5168;&#x90FD;&#x662F;micro</span>
+      microTimerFunc()
+    }
+  }
+  <span class="hljs-comment">// $flow-disable-line</span>
+  <span class="hljs-keyword">if</span> (!cb &amp;&amp; <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Promise</span> !== <span class="hljs-string">&apos;undefined&apos;</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(resolve =&gt; {
+      _resolve = resolve
+    })
+  }
+}
+</code></pre>
+<p>&#x6211;&#x4EEC;&#x770B;&#x5230;&#xFF0C;Vue &#x7684;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#x90FD;&#x662F;&#x7528; Promise &#x6765;&#x5305;&#x88C5;&#x7684;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x662F;&#x8BF4;&#x5B83;&#x4EEC;&#x90FD;&#x662F; micro-task&#x3002;&#x8FD9;&#x4E00;&#x70B9;&#x548C;&#x6211;&#x4EEC;&#x201C;&#x524D;&#x7F6E;&#x77E5;&#x8BC6;&#x201D;&#x4E2D;&#x7684;&#x6E32;&#x67D3;&#x65F6;&#x673A;&#x7684;&#x5206;&#x6790;&#x4E0D;&#x8C0B;&#x800C;&#x5408;&#x3002;</p>
+<p>&#x4E3A;&#x4E86;&#x5E26;&#x5927;&#x5BB6;&#x719F;&#x6089;&#x4E00;&#x4E0B;&#x5E38;&#x89C1;&#x7684; macro &#x548C; micro &#x6D3E;&#x53D1;&#x65B9;&#x5F0F;&#x3001;&#x52A0;&#x6DF1;&#x5BF9; Event Loop &#x7684;&#x7406;&#x89E3;&#xFF0C;&#x6211;&#x4EEC;&#x7EE7;&#x7EED;&#x7EC6;&#x5316;&#x89E3;&#x6790;&#x4E00;&#x4E0B; macroTimeFunc() &#x548C; microTimeFunc() &#x4E24;&#x4E2A;&#x65B9;&#x6CD5;&#x3002;</p>
+<p>macroTimeFunc() &#x662F;&#x8FD9;&#x4E48;&#x5B9E;&#x73B0;&#x7684;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// macro&#x9996;&#x9009;setImmediate &#x8FD9;&#x4E2A;&#x517C;&#x5BB9;&#x6027;&#x6700;&#x5DEE;</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> setImmediate !== <span class="hljs-string">&apos;undefined&apos;</span> &amp;&amp; isNative(setImmediate)) {
+  macroTimerFunc = () =&gt; {
+    setImmediate(flushCallbacks)
+  }
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> MessageChannel !== <span class="hljs-string">&apos;undefined&apos;</span> &amp;&amp; (
+    isNative(MessageChannel) ||
+    <span class="hljs-comment">// PhantomJS</span>
+    MessageChannel.toString() === <span class="hljs-string">&apos;[object MessageChannelConstructor]&apos;</span>
+  )) {
+  <span class="hljs-keyword">const</span> channel = <span class="hljs-keyword">new</span> MessageChannel()
+  <span class="hljs-keyword">const</span> port = channel.port2
+  channel.port1.onmessage = flushCallbacks
+  macroTimerFunc = () =&gt; {
+    port.postMessage(<span class="hljs-number">1</span>)
+  }
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">// &#x517C;&#x5BB9;&#x6027;&#x6700;&#x597D;&#x7684;&#x6D3E;&#x53D1;&#x65B9;&#x5F0F;&#x662F;setTimeout</span>
+  macroTimerFunc = () =&gt; {
+    setTimeout(flushCallbacks, <span class="hljs-number">0</span>)
+  }
+}
+</code></pre>
+<p>microTimeFunc() &#x662F;&#x8FD9;&#x4E48;&#x5B9E;&#x73B0;&#x7684;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x7B80;&#x5355;&#x7C97;&#x66B4; &#x4E0D;&#x662F;ios&#x5168;&#x90FD;&#x7ED9;&#x6211;&#x53BB;Promise &#x5982;&#x679C;&#x4E0D;&#x517C;&#x5BB9;promise &#x90A3;&#x4E48;&#x4F60;&#x53EA;&#x80FD;&#x5C06;&#x5C31;&#x4E00;&#x4E0B;&#x53D8;&#x6210;macro&#x4E86;</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Promise</span> !== <span class="hljs-string">&apos;undefined&apos;</span> &amp;&amp; isNative(<span class="hljs-built_in">Promise</span>)) {
+  <span class="hljs-keyword">const</span> p = <span class="hljs-built_in">Promise</span>.resolve()
+  microTimerFunc = () =&gt; {
+    p.then(flushCallbacks)
+    <span class="hljs-comment">// in problematic UIWebViews, Promise.then doesn&apos;t completely break, but</span>
+    <span class="hljs-comment">// it can get stuck in a weird state where callbacks are pushed into the</span>
+    <span class="hljs-comment">// microtask queue but the queue isn&apos;t being flushed, until the browser</span>
+    <span class="hljs-comment">// needs to do some other work, e.g. handle a timer. Therefore we can</span>
+    <span class="hljs-comment">// &quot;force&quot; the microtask queue to be flushed by adding an empty timer.</span>
+    <span class="hljs-keyword">if</span> (isIOS) setTimeout(noop)
+  }
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">// &#x5982;&#x679C;&#x65E0;&#x6CD5;&#x6D3E;&#x53D1;micro&#xFF0C;&#x5C31;&#x9000;&#x800C;&#x6C42;&#x5176;&#x6B21;&#x6D3E;&#x53D1;&#x4E3A;macro</span>
+  microTimerFunc = macroTimerFunc
+}
+</code></pre>
+<p>&#x6211;&#x4EEC;&#x6CE8;&#x610F;&#x5230;&#xFF0C;&#x65E0;&#x8BBA;&#x662F;&#x6D3E;&#x53D1; macro &#x4EFB;&#x52A1;&#x8FD8;&#x662F;&#x6D3E;&#x53D1; micro &#x4EFB;&#x52A1;&#xFF0C;&#x6D3E;&#x53D1;&#x7684;&#x4EFB;&#x52A1;&#x5BF9;&#x8C61;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x53EB;&#x505A; flushCallbacks &#x7684;&#x4E1C;&#x897F;&#xFF0C;&#x8FD9;&#x4E2A;&#x4E1C;&#x897F;&#x505A;&#x4E86;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;</p>
+<p>flushCallbacks &#x6E90;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flushCallbacks</span> (<span class="hljs-params"></span>) </span>{
+  pending = <span class="hljs-literal">false</span>
+  <span class="hljs-comment">// callbacks&#x5728;nextick&#x4E2D;&#x51FA;&#x73B0;&#x8FC7; &#x5B83;&#x662F;&#x4EFB;&#x52A1;&#x6570;&#x7EC4;&#xFF08;&#x961F;&#x5217;&#xFF09;</span>
+  <span class="hljs-keyword">const</span> copies = callbacks.slice(<span class="hljs-number">0</span>)
+  callbacks.length = <span class="hljs-number">0</span>
+  <span class="hljs-comment">// &#x5C06;callbacks&#x4E2D;&#x7684;&#x4EFB;&#x52A1;&#x9010;&#x4E2A;&#x53D6;&#x51FA;&#x6267;&#x884C;</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; copies.length; i++) {
+    copies[i]()
+  }
+}
+</code></pre>
+<p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x7406;&#x6E05;&#x695A;&#x4E86;&#xFF1A;Vue &#x4E2D;&#x6BCF;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x72B6;&#x6001;&#x66F4;&#x65B0;&#x4EFB;&#x52A1;&#xFF0C;&#x5B83;&#x5C31;&#x4F1A;&#x88AB;&#x585E;&#x8FDB;&#x4E00;&#x4E2A;&#x53EB; callbacks &#x7684;&#x6570;&#x7EC4;&#xFF08;&#x6B64;&#x5904;&#x662F;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#x7684;&#x5B9E;&#x73B0;&#x5F62;&#x5F0F;&#xFF09;&#x4E2D;&#x3002;&#x8FD9;&#x4E2A;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#x5728;&#x88AB;&#x4E22;&#x8FDB; micro &#x6216; macro &#x961F;&#x5217;&#x4E4B;&#x524D;&#xFF0C;&#x4F1A;&#x5148;&#x53BB;&#x68C0;&#x67E5;&#x5F53;&#x524D;&#x662F;&#x5426;&#x6709;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x4EFB;&#x52A1;&#x6B63;&#x5728;&#x6267;&#x884C;&#xFF08;&#x5373;&#x68C0;&#x67E5; pending &#x9501;&#xFF09;&#x3002;&#x5982;&#x679C;&#x786E;&#x8BA4; pending &#x9501;&#x662F;&#x5F00;&#x7740;&#x7684;&#xFF08;false&#xFF09;&#xFF0C;&#x5C31;&#x628A;&#x5B83;&#x8BBE;&#x7F6E;&#x4E3A;&#x9501;&#x4E0A;&#xFF08;true&#xFF09;&#xFF0C;&#x7136;&#x540E;&#x5BF9;&#x5F53;&#x524D; callbacks &#x6570;&#x7EC4;&#x7684;&#x4EFB;&#x52A1;&#x8FDB;&#x884C;&#x6D3E;&#x53D1;&#xFF08;&#x4E22;&#x8FDB; micro &#x6216; macro &#x961F;&#x5217;&#xFF09;&#x548C;&#x6267;&#x884C;&#x3002;&#x8BBE;&#x7F6E; pending &#x9501;&#x7684;&#x610F;&#x4E49;&#x5728;&#x4E8E;&#x4FDD;&#x8BC1;&#x72B6;&#x6001;&#x66F4;&#x65B0;&#x4EFB;&#x52A1;&#x7684;&#x6709;&#x5E8F;&#x8FDB;&#x884C;&#xFF0C;&#x907F;&#x514D;&#x53D1;&#x751F;&#x6DF7;&#x4E71;&#x3002;</p>
+<p>&#x672C;&#x5C0F;&#x8282;&#x6211;&#x4EEC;&#x4ECE;&#x6027;&#x80FD;&#x4F18;&#x5316;&#x7684;&#x89D2;&#x5EA6;&#x51FA;&#x53D1;&#xFF0C;&#x901A;&#x8FC7;&#x89E3;&#x6790;Vue&#x6E90;&#x7801;&#xFF0C;&#x5BF9;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x8FD9;&#x4E00;&#x9AD8;&#x6548;&#x7684; DOM &#x4F18;&#x5316;&#x624B;&#x6BB5;&#x6709;&#x4E86;&#x611F;&#x6027;&#x7684;&#x8BA4;&#x77E5;&#x3002;&#x540C;&#x65F6;&#x5E2E;&#x52A9;&#x5927;&#x5BB6;&#x8FDB;&#x4E00;&#x6B65;&#x719F;&#x6089;&#x4E86; micro &#x4E0E; macro &#x5728;&#x751F;&#x4EA7;&#x4E2D;&#x7684;&#x5E94;&#x7528;&#xFF0C;&#x52A0;&#x6DF1;&#x4E86;&#x5BF9; Event Loop &#x7684;&#x7406;&#x89E3;&#x3002;&#x4E8B;&#x5B9E;&#x4E0A;&#xFF0C;Vue &#x6E90;&#x7801;&#x4E2D;&#x8FD8;&#x6709;&#x8BB8;&#x591A;&#x503C;&#x5F97;&#x79F0;&#x9053;&#x7684;&#x751F;&#x4EA7;&#x5B9E;&#x8DF5;&#xFF0C;&#x5176;&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;&#x4E0E;&#x7F16;&#x7801;&#x7EC6;&#x8282;&#x90FD;&#x503C;&#x5F97;&#x6211;&#x4EEC;&#x53BB;&#x7EC6;&#x7EC6;&#x54C1;&#x5473;&#x3002;&#x5BF9;&#x8FD9;&#x4E2A;&#x8BDD;&#x9898;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x540C;&#x5B66;&#xFF0C;&#x8BFE;&#x540E;&#x4E0D;&#x59A8;&#x79FB;&#x6B65; Vue&#x8FD0;&#x884C;&#x673A;&#x5236;&#x89E3;&#x6790; &#x8FDB;&#x884C;&#x63A2;&#x7D22;&#x3002;</p>
+<h3 id="&#x5C0F;&#x7ED3;">&#x5C0F;&#x7ED3;</h3>
+<hr>
+<p>&#x81F3;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x7684; DOM &#x4F18;&#x5316;&#x4E4B;&#x8DEF;&#x624D;&#x8D70;&#x5B8C;&#x4E86;&#x4E00;&#x534A;&#x3002;</p>
+<p>&#x4EE5;&#x4E0A;&#x6211;&#x4EEC;&#x90FD;&#x5728;&#x8BA8;&#x8BBA;&#x201C;&#x5982;&#x4F55;&#x51CF;&#x5C11; DOM &#x64CD;&#x4F5C;&#x201D;&#x7684;&#x8BDD;&#x9898;&#x3002;&#x8FD9;&#x4E2A;&#x8BDD;&#x9898;&#x6BD4;&#x8F83;&#x5B8F;&#x89C2;&#x2014;&#x2014;DOM &#x64CD;&#x4F5C;&#x4E5F;&#x5206;&#x5F88;&#x591A;&#x79CD;&#xFF0C;&#x5B83;&#x4EEC;&#x5E26;&#x6765;&#x7684;&#x53D8;&#x5316;&#x5404;&#x4E0D;&#x76F8;&#x540C;&#x3002;&#x6709;&#x7684;&#x64CD;&#x4F5C;&#x53EA;&#x89E6;&#x53D1;&#x91CD;&#x7ED8;&#xFF0C;&#x8FD9;&#x65F6;&#x6211;&#x4EEC;&#x7684;&#x6027;&#x80FD;&#x635F;&#x8017;&#x5C31;&#x5C0F;&#x4E00;&#x4E9B;&#xFF1B;&#x6709;&#x7684;&#x64CD;&#x4F5C;&#x4F1A;&#x89E6;&#x53D1;&#x56DE;&#x6D41;&#xFF0C;&#x8FD9;&#x65F6;&#x6211;&#x4EEC;&#x66F4;&#x201C;&#x8089;&#x75BC;&#x201D;&#x4E00;&#x4E9B;&#x3002;&#x90A3;&#x4E48;&#x5982;&#x4F55;&#x7406;&#x89E3;&#x56DE;&#x6D41;&#x4E0E;&#x91CD;&#x7ED8;&#xFF0C;&#x5982;&#x4F55;&#x501F;&#x52A9;&#x8FD9;&#x4E9B;&#x7406;&#x89E3;&#x53BB;&#x63D0;&#x5347;&#x9875;&#x9762;&#x6E32;&#x67D3;&#x6548;&#x7387;&#x5462;&#xFF1F;</p>
+<p>&#x7ED3;&#x675F;&#x4E86; JS &#x7684;&#x5F81;&#x7A0B;&#xFF0C;&#x6211;&#x4EEC;&#x4E0B;&#x9762;&#x5C31;&#x8D70;&#x8FDB; CSS &#x7684;&#x4E16;&#x754C;&#x4E00;&#x7AA5;&#x7A76;&#x7ADF;&#x3002;</p>
+<hr>
+<dl id="catalog" style="font-size:14px;list-style-type:none;">
+    <dt>&#x76EE;&#x5F55;</dt>
+    <dd style="margin:0;padding:0;"><a href="&#x77E5;&#x8BC6;&#x4F53;&#x7CFB;&#x4E0E;&#x5C0F;&#x518C;&#x683C;&#x5C40;.html">&#x5F00;&#x7BC7;&#xFF1A;&#x77E5;&#x8BC6;&#x4F53;&#x7CFB;&#x4E0E;&#x5C0F;&#x518C;&#x683C;&#x5C40;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="webpack&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x4E0E;Gzip&#x539F;&#x7406;.html">&#x7F51;&#x7EDC;&#x7BC7;1&#xFF1A;webpack&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x4E0E;Gzip&#x539F;&#x7406;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x56FE;&#x7247;&#x4F18;&#x5316;&#x2014;&#x2014;&#x8D28;&#x91CF;&#x4E0E;&#x6027;&#x80FD;&#x7684;&#x535A;&#x5F08;.html">&#x7F51;&#x7EDC;&#x7BC7;2&#xFF1A;&#x56FE;&#x7247;&#x4F18;&#x5316;&#x2014;&#x2014;&#x8D28;&#x91CF;&#x4E0E;&#x6027;&#x80FD;&#x7684;&#x535A;&#x5F08;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x6D4F;&#x89C8;&#x5668;&#x7F13;&#x5B58;&#x673A;&#x5236;&#x4ECB;&#x7ECD;&#x4E0E;&#x7F13;&#x5B58;&#x7B56;&#x7565;&#x5256;&#x6790;.html">&#x5B58;&#x50A8;&#x7BC7;1&#xFF1A;&#x6D4F;&#x89C8;&#x5668;&#x7F13;&#x5B58;&#x673A;&#x5236;&#x4ECB;&#x7ECD;&#x4E0E;&#x7F13;&#x5B58;&#x7B56;&#x7565;&#x5256;&#x6790;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x672C;&#x5730;&#x5B58;&#x50A8;&#x2014;&#x2014;&#x4ECE;Cookie&#x5230;WebStorage&#x3001;IndexDB.html">&#x5B58;&#x50A8;&#x7BC7;2&#xFF1A;&#x672C;&#x5730;&#x5B58;&#x50A8;&#x2014;&#x2014;&#x4ECE;Cookie&#x5230;WebStorage&#x3001;IndexDB</a></dd>
+    <dd style="margin:0;padding:0;"><a href="CDN&#x7684;&#x7F13;&#x5B58;&#x4E0E;&#x56DE;&#x6E90;&#x673A;&#x5236;&#x89E3;&#x6790;.html">&#x5F69;&#x86CB;&#x7BC7;&#xFF1A;CDN&#x7684;&#x7F13;&#x5B58;&#x4E0E;&#x56DE;&#x6E90;&#x673A;&#x5236;&#x89E3;&#x6790;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x670D;&#x52A1;&#x7AEF;&#x6E32;&#x67D3;&#x7684;&#x63A2;&#x7D22;&#x4E0E;&#x5B9E;&#x8DF5;.html">&#x6E32;&#x67D3;&#x7BC7;1&#xFF1A;&#x670D;&#x52A1;&#x7AEF;&#x6E32;&#x67D3;&#x7684;&#x63A2;&#x7D22;&#x4E0E;&#x5B9E;&#x8DF5;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x77E5;&#x5DF1;&#x77E5;&#x5F7C;&#x2014;&#x2014;&#x89E3;&#x9501;&#x6D4F;&#x89C8;&#x5668;&#x80CC;&#x540E;&#x7684;&#x8FD0;&#x884C;&#x673A;&#x5236;.html">&#x6E32;&#x67D3;&#x7BC7;2&#xFF1A;&#x77E5;&#x5DF1;&#x77E5;&#x5F7C;&#x2014;&#x2014;&#x89E3;&#x9501;&#x6D4F;&#x89C8;&#x5668;&#x80CC;&#x540E;&#x7684;&#x8FD0;&#x884C;&#x673A;&#x5236;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x5BF9;&#x75C7;&#x4E0B;&#x836F;&#x2014;&#x2014;DOM&#x4F18;&#x5316;&#x539F;&#x7406;&#x4E0E;&#x57FA;&#x672C;&#x5B9E;&#x8DF5;.html">&#x6E32;&#x67D3;&#x7BC7;3&#xFF1A;&#x5BF9;&#x75C7;&#x4E0B;&#x836F;&#x2014;&#x2014;DOM&#x4F18;&#x5316;&#x539F;&#x7406;&#x4E0E;&#x57FA;&#x672C;&#x5B9E;&#x8DF5;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x5343;&#x65B9;&#x767E;&#x8BA1;&#x2014;&#x2014;EventLoop&#x4E0E;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;.html">&#x6E32;&#x67D3;&#x7BC7;4&#xFF1A;&#x5343;&#x65B9;&#x767E;&#x8BA1;&#x2014;&#x2014;EventLoop&#x4E0E;&#x5F02;&#x6B65;&#x66F4;&#x65B0;&#x7B56;&#x7565;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x6700;&#x540E;&#x4E00;&#x51FB;&#x2014;&#x2014;&#x56DE;&#x6D41;&#xFF08;Reflow&#xFF09;&#x4E0E;&#x91CD;&#x7ED8;&#xFF08;Repaint&#xFF09;.html">&#x6E32;&#x67D3;&#x7BC7;5&#xFF1A;&#x6700;&#x540E;&#x4E00;&#x51FB;&#x2014;&#x2014;&#x56DE;&#x6D41;&#xFF08;Reflow&#xFF09;&#x4E0E;&#x91CD;&#x7ED8;&#xFF08;Repaint&#xFF09;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x4F18;&#x5316;&#x9996;&#x5C4F;&#x4F53;&#x9A8C;&#x2014;&#x2014;Lazy-Load&#x521D;&#x63A2;.html">&#x5E94;&#x7528;&#x7BC7;1&#xFF1A;&#x4F18;&#x5316;&#x9996;&#x5C4F;&#x4F53;&#x9A8C;&#x2014;&#x2014;Lazy-Load&#x521D;&#x63A2;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x4E8B;&#x4EF6;&#x7684;&#x8282;&#x6D41;&#xFF08;throttle&#xFF09;&#x4E0E;&#x9632;&#x6296;&#xFF08;debounce&#xFF09;.html">&#x5E94;&#x7528;&#x7BC7;2&#xFF1A;&#x4E8B;&#x4EF6;&#x7684;&#x8282;&#x6D41;&#xFF08;throttle&#xFF09;&#x4E0E;&#x9632;&#x6296;&#xFF08;debounce&#xFF09;</a></dd>
+    <dd style="margin:0;padding:0;"><a href="Performance&#x3001;ddghtHouse&#x4E0E;&#x6027;&#x80FD;API.md">&#x6027;&#x80FD;&#x76D1;&#x6D4B;&#x7BC7;&#xFF1A;Performance&#x3001;LightHouse&#x4E0E;&#x6027;&#x80FD;API</a></dd>
+    <dd style="margin:0;padding:0;"><a href="&#x524D;&#x65B9;&#x7684;&#x8DEF;&#xFF1A;&#x5E0C;&#x671B;&#x6210;&#x4E3A;&#x4F60;&#x7684;&#x8D77;&#x70B9;.md)">&#x524D;&#x65B9;&#x7684;&#x8DEF;&#xFF1A;&#x5E0C;&#x671B;&#x6210;&#x4E3A;&#x4F60;&#x7684;&#x8D77;&#x70B9;</a></dd>
+</dl>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="对症下药——DOM优化原理与基本实践.html" class="navigation navigation-prev " aria-label="Previous page: 渲染篇3：对症下药——DOM优化原理与基本实践">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="最后一击——回流（Reflow）与重绘（Repaint）.html" class="navigation navigation-next " aria-label="Next page: 渲染篇5：最后一击——回流（Reflow）与重绘（Repaint）">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"渲染篇4：千方百计——EventLoop与异步更新策略","level":"4.3.10","depth":2,"next":{"title":"渲染篇5：最后一击——回流（Reflow）与重绘（Repaint）","level":"4.3.11","depth":2,"path":"技术分享/前端性能优化原理与实践/最后一击——回流（Reflow）与重绘（Repaint）.md","ref":"技术分享/前端性能优化原理与实践/最后一击——回流（Reflow）与重绘（Repaint）.md","articles":[]},"previous":{"title":"渲染篇3：对症下药——DOM优化原理与基本实践","level":"4.3.9","depth":2,"path":"技术分享/前端性能优化原理与实践/对症下药——DOM优化原理与基本实践.md","ref":"技术分享/前端性能优化原理与实践/对症下药——DOM优化原理与基本实践.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","expandable-chapters"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"expandable-chapters":{},"highlight":{},"search":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"个人wiki","gitbook":"*"},"file":{"path":"技术分享/前端性能优化原理与实践/千方百计——EventLoop与异步更新策略.md","mtime":"2019-07-27T10:07:57.027Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-09-03T09:59:37.837Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
