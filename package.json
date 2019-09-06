@@ -2,17 +2,17 @@
   "name": "wiki",
   "author": "Drex",
   "homepage": "https://github.com/idrex/wiki",
-  "dependencies": {
-    "gh-pages": "^2.1.1",
-    "gitbook-plugin-toggle-chapters": "^0.0.3",
-    "husky": "^3.0.5"
-  },
   "scripts": {
-    "build": "gh-pages -d _book"
+    "start": "gitbook serve",
+    "build": "gitbook build && gh-pages -d _book"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run build"
     }
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1",
+    "husky": "^3.0.5"
   }
 }

@@ -1,4 +1,8 @@
 {
-	"title":"个人wiki",
-	"plugins": ["-lunr","expandable-chapters"]
+  "title": "Wiki",
+  "author": "Drex",
+  "description": "Wiki",
+  "language": "zh-hans",
+  "gitbook": "3.2.3",
+  "plugins": ["expandable-chapters"]
 }
