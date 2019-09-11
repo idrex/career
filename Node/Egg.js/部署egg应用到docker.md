@@ -10,27 +10,30 @@
 FROM node:slim
 
 # 创建app目录
-RUN mkdir -p /data/egg-demo/api
+RUN mkdir -p /data/your-project
 
 # 设置工作目录
-WORKDIR /data/egg-demo/api
+WORKDIR /data/your-project
 
 # 拷贝package.json文件到工作目录
 # !!重要：package.json需要单独添加。
 # Docker在构建镜像的时候，是一层一层构建的，仅当这一层有变化时，重新构建对应的层。
 # 如果package.json和源代码一起添加到镜像，则每次修改源码都需要重新安装npm模块，这样木有必要。
 # 所以，正确的顺序是: 添加package.json；安装npm模块；添加源代码。
-COPY package.json /data/egg-demo/api/package.json
+COPY package.json /data/your-project/package.json
 
 # 安装npm依赖(使用淘宝的镜像源)
 # 如果使用的境外服务器，无需使用淘宝的镜像源，即改为`RUN npm i`。
 RUN npm i --registry=https://registry.npm.taobao.org
 
 # 拷贝所有源代码到工作目录
-COPY . /data/egg-demo/api
+COPY . /data/your-project
 
-# 暴露容器端口
-EXPOSE 9002
+# 打包TS应用(需要TS编译的项目需要添加)
+RUN npm run ci
+
+# 暴露容器端口(根据需求依此添加)
+EXPOSE 7001
 
 # 启动node应用
 CMD npm start
@@ -47,7 +50,7 @@ $ sudo docker build -t node/koa-server .
 5. 执行以下命令，使用刚创建好的镜像来启动一个容器；
 普通node.js应用
 ```ssh
-$ sudo docker run -d --name koa-server -p 9002:9002 node/koa-server
+$ sudo docker run -d --name koa-server -p 7001:7001 node/koa-server
 ```
 
 -d为后台运行容器。如果普通node.js应用使用以上命令，容器使用9002端口，与Dockerfile里面的一致。
