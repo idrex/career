@@ -670,27 +670,30 @@
 FROM node:slim
 
 # &#x521B;&#x5EFA;app&#x76EE;&#x5F55;
-RUN mkdir -p /data/egg-demo/api
+RUN mkdir -p /data/your-project
 
 # &#x8BBE;&#x7F6E;&#x5DE5;&#x4F5C;&#x76EE;&#x5F55;
-WORKDIR /data/egg-demo/api
+WORKDIR /data/your-project
 
 # &#x62F7;&#x8D1D;package.json&#x6587;&#x4EF6;&#x5230;&#x5DE5;&#x4F5C;&#x76EE;&#x5F55;
 # !!&#x91CD;&#x8981;&#xFF1A;package.json&#x9700;&#x8981;&#x5355;&#x72EC;&#x6DFB;&#x52A0;&#x3002;
 # Docker&#x5728;&#x6784;&#x5EFA;&#x955C;&#x50CF;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x662F;&#x4E00;&#x5C42;&#x4E00;&#x5C42;&#x6784;&#x5EFA;&#x7684;&#xFF0C;&#x4EC5;&#x5F53;&#x8FD9;&#x4E00;&#x5C42;&#x6709;&#x53D8;&#x5316;&#x65F6;&#xFF0C;&#x91CD;&#x65B0;&#x6784;&#x5EFA;&#x5BF9;&#x5E94;&#x7684;&#x5C42;&#x3002;
 # &#x5982;&#x679C;package.json&#x548C;&#x6E90;&#x4EE3;&#x7801;&#x4E00;&#x8D77;&#x6DFB;&#x52A0;&#x5230;&#x955C;&#x50CF;&#xFF0C;&#x5219;&#x6BCF;&#x6B21;&#x4FEE;&#x6539;&#x6E90;&#x7801;&#x90FD;&#x9700;&#x8981;&#x91CD;&#x65B0;&#x5B89;&#x88C5;npm&#x6A21;&#x5757;&#xFF0C;&#x8FD9;&#x6837;&#x6728;&#x6709;&#x5FC5;&#x8981;&#x3002;
 # &#x6240;&#x4EE5;&#xFF0C;&#x6B63;&#x786E;&#x7684;&#x987A;&#x5E8F;&#x662F;: &#x6DFB;&#x52A0;package.json&#xFF1B;&#x5B89;&#x88C5;npm&#x6A21;&#x5757;&#xFF1B;&#x6DFB;&#x52A0;&#x6E90;&#x4EE3;&#x7801;&#x3002;
-COPY package.json /data/egg-demo/api/package.json
+COPY package.json /data/your-project/package.json
 
 # &#x5B89;&#x88C5;npm&#x4F9D;&#x8D56;(&#x4F7F;&#x7528;&#x6DD8;&#x5B9D;&#x7684;&#x955C;&#x50CF;&#x6E90;)
 # &#x5982;&#x679C;&#x4F7F;&#x7528;&#x7684;&#x5883;&#x5916;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x65E0;&#x9700;&#x4F7F;&#x7528;&#x6DD8;&#x5B9D;&#x7684;&#x955C;&#x50CF;&#x6E90;&#xFF0C;&#x5373;&#x6539;&#x4E3A;`RUN npm i`&#x3002;
 RUN npm i --registry=https://registry.npm.taobao.org
 
 # &#x62F7;&#x8D1D;&#x6240;&#x6709;&#x6E90;&#x4EE3;&#x7801;&#x5230;&#x5DE5;&#x4F5C;&#x76EE;&#x5F55;
-COPY . /data/egg-demo/api
+COPY . /data/your-project
 
-# &#x66B4;&#x9732;&#x5BB9;&#x5668;&#x7AEF;&#x53E3;
-EXPOSE 9002
+# &#x6253;&#x5305;TS&#x5E94;&#x7528;(&#x9700;&#x8981;TS&#x7F16;&#x8BD1;&#x7684;&#x9879;&#x76EE;&#x9700;&#x8981;&#x6DFB;&#x52A0;)
+RUN npm run ci
+
+# &#x66B4;&#x9732;&#x5BB9;&#x5668;&#x7AEF;&#x53E3;(&#x6839;&#x636E;&#x9700;&#x6C42;&#x4F9D;&#x6B64;&#x6DFB;&#x52A0;)
+EXPOSE 7001
 
 # &#x542F;&#x52A8;node&#x5E94;&#x7528;
 CMD npm start
@@ -705,7 +708,7 @@ CMD npm start
 <p>-t&#x662F;&#x5BF9;&#x8BE5;&#x955C;&#x50CF;&#x8FDB;&#x884C;tag&#x6807;&#x8BC6;&#xFF0C;&#x6807;&#x8BC6;&#x7684;&#x540D;&#x5B57;&#x4E3A;node/koa-server&#xFF0C;&#x53EF;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;&#x8FD9;&#x4E2A;&#x540D;&#x5B57;&#x3002;&#x955C;&#x50CF;&#x7684;&#x6784;&#x5EFA;&#x8FC7;&#x7A0B;&#x4F9D;&#x8D56;&#x4E8E;&#x7F51;&#x901F;&#xFF0C;&#x6574;&#x4F53;&#x8FD8;&#x6BD4;&#x8F83;&#x5FEB;&#x3002;npm&#x4F9D;&#x8D56;&#x53EF;&#x80FD;&#x4F1A;&#x4E45;&#x4E00;&#x4E9B;&#xFF0C;&#x56E0;&#x4E3A;egg.js&#x7684;&#x4F9D;&#x8D56;&#x6BD4;&#x8F83;&#x591A;&#x3002;&#x5982;&#x679C;&#x6240;&#x6709;&#x6B65;&#x9AA4;&#x6267;&#x884C;&#x5B8C;&#xFF0C;&#x4F1A;&#x6709;success&#x7684;&#x63D0;&#x793A;&#xFF0C;&#x5B89;&#x88C5;&#x6210;&#x529F;&#x4E86;&#x3002;</p>
 <ol>
 <li>&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#xFF0C;&#x4F7F;&#x7528;&#x521A;&#x521B;&#x5EFA;&#x597D;&#x7684;&#x955C;&#x50CF;&#x6765;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x5BB9;&#x5668;&#xFF1B;
-&#x666E;&#x901A;node.js&#x5E94;&#x7528;<pre><code class="lang-ssh">$ sudo docker run -d --name koa-server -p 9002:9002 node/koa-server
+&#x666E;&#x901A;node.js&#x5E94;&#x7528;<pre><code class="lang-ssh">$ sudo docker run -d --name koa-server -p 7001:7001 node/koa-server
 </code></pre>
 </li>
 </ol>
@@ -790,7 +793,7 @@ $ sudo docker rmi -f imageId
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"部署egg应用到docker","level":"5.3.1","depth":2,"next":{"title":"Linux基础","level":"6.1","depth":1,"ref":"","articles":[{"title":"Linux目录结构及常用命令","level":"6.1.1","depth":2,"path":"ServicesSecurity/Linux目录结构及常用命令.md","ref":"ServicesSecurity/Linux目录结构及常用命令.md","articles":[]}]},"previous":{"title":"Egg.js","level":"5.3","depth":1,"ref":"","articles":[{"title":"部署egg应用到docker","level":"5.3.1","depth":2,"path":"Node/Egg.js/部署egg应用到docker.md","ref":"Node/Egg.js/部署egg应用到docker.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["expandable-chapters"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"expandable-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Drex","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Wiki","language":"zh-hans","gitbook":"3.2.3","description":"Wiki"},"file":{"path":"Node/Egg.js/部署egg应用到docker.md","mtime":"2019-09-06T09:26:39.722Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-09-06T10:00:35.985Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"部署egg应用到docker","level":"5.3.1","depth":2,"next":{"title":"Linux基础","level":"6.1","depth":1,"ref":"","articles":[{"title":"Linux目录结构及常用命令","level":"6.1.1","depth":2,"path":"ServicesSecurity/Linux目录结构及常用命令.md","ref":"ServicesSecurity/Linux目录结构及常用命令.md","articles":[]}]},"previous":{"title":"Egg.js","level":"5.3","depth":1,"ref":"","articles":[{"title":"部署egg应用到docker","level":"5.3.1","depth":2,"path":"Node/Egg.js/部署egg应用到docker.md","ref":"Node/Egg.js/部署egg应用到docker.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["expandable-chapters"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"expandable-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Drex","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Wiki","language":"zh-hans","gitbook":"3.2.3","description":"Wiki"},"file":{"path":"Node/Egg.js/部署egg应用到docker.md","mtime":"2019-09-11T03:38:25.795Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-09-11T03:38:50.723Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
