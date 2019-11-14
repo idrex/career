@@ -102,6 +102,46 @@ GEOMETRY              # 地理几何对象信息
 GEOMETRY('POINT')     # 地理点信息
 ```
 
-## 运行
+- 属性设置
+```bash
+primaryKey: true,               # 主键设置
+autoIncrement: true             # 自增整数
+allowNull: false,               # 是否为空
+defaultValue: Sequelize.NOW     # 默认值(当前时间)
+unique: true                    # 唯一约束
+references: {
+    model: 'Bar',# 这是引用另一个模型
+    key: 'id',# 这是引用模型的列名称
+}                               # 外健约束
+comment: '这是一个包含注释的列名'
+```
+
+## 查询接口
+
+- 表操作： https://sequelize.org/master/class/lib/query-interface.js~QueryInterface.html
+```bash
+createDatabase              # 建立数据库（数据库：字符串，选项：对象）
+
+createTable                 # 创建具有给定属性集的表
+namedTable                  # 重命名表格
+dropTable                   # 从数据库中删除表
+
+addColumn                   # 向表添加新列
+namedColumn                 # 重命名列
+changeColumn                # 更改列定义
+removeColumn                # 从表中删除列
+
+addIndex                    # 向列添加索引
+removeIndex                 # 从表中删除现有索引
+```
+
+- 数据操作
+```bash
+bulkInsert                  # 将多个记录插入表中
+bulkUpdate                  # 更新一个表的多个记录
+bulkDelete                  # 从表中删除多个记录
+```
+
+## 领域模型
 
 ## 迁移
