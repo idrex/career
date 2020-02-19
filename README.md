@@ -1,19 +1,26 @@
-# 个人wiki
+# Ant Design Pro Site
 
-## 说明
+The documentation source of [Ant Design Pro](https://github.com/ant-design/ant-design-pro).
 
-* SUMMARY.md为左边栏目录
-* 所有文件通过markdown格式来写, .md命名
-* 直接在master编写, push后自动更新
+### Development
 
-## 使用方法
-```ssh
-// 安装
-$ npm install gitbook-cli -g
-// 本地运行
-$ gitbook serve
-// 构建
-$ gitbook build
+```bash
+$ git clone git@github.com:ant-design/ant-design-pro-site.git
+$ cd ant-design-pro-site
+$ npm install
+$ npm start
 ```
 
-Gitbook: https://github.com/GitbookIO/gitbook
+Then visit http://localhost:8001 .
+
+### Deploy
+
+```
+$ npm run site
+```
+
+### Publish Components
+
+```
+$ npm run publish-components
+```
