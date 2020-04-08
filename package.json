@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "dumi dev",
-    "build": "dumi build",
-    "deploy": "gh-pages -d public"
+    "build": "dumi build"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.0.5",
     "antd": "^4.1.1",
-    "dumi": "^1.0.15",
-    "gh-pages": "^2.2.0"
+    "dumi": "^1.0.15"
   }
 }

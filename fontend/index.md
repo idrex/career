@@ -3,7 +3,6 @@ title: 前端体系图
 nav:
   title: 前端
   order: 1
-sidemenu: false
 toc: false
 ---
 
