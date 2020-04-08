@@ -1,8 +1,0 @@
-{
-  "title": "Wiki",
-  "author": "Drex",
-  "description": "Wiki",
-  "language": "zh-hans",
-  "gitbook": "3.2.3",
-  "plugins": ["expandable-chapters"]
-}
