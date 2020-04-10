@@ -1,10 +1,7 @@
 ---
-order: 1
 title: 基础中的基础
-subtitle: Data text
-col: 1
-cols: 1
-type: 基础
+group:
+  order: 5
 ---
 
 ### 1. 原型 / 构造函数 / 实例

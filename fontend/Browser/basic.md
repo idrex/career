@@ -1,4 +1,10 @@
-## 浏览器
+---
+title: 基础知识
+group:
+  title: 浏览器
+  order: 2
+---
+
 
 ### 1. 跨标签页通讯
 
@@ -44,15 +50,29 @@
 - 发送请求，分析 url，设置请求报文(头，主体)
 - 服务器返回请求的文件 (html)
 - 浏览器渲染
-	- HTML parser --> DOM Tree
+	- `HTML parser` => `DOM Tree`
 		- 标记化算法，进行元素状态的标记
 		- dom 树构建 
-	- CSS parser --> Style Tree
+	- `CSS parser` => `Style Tree`
 		- 解析 css 代码，生成样式树 
-	- attachment --> Render Tree
+	- attachment => `Render Tree`
 		- 结合 dom树 与 style树，生成渲染树
 	- layout: 布局
 	- GPU painting: 像素绘制页面
+
+
+- 缓存策略: 可分为 **强缓存** 和 **协商缓存**
+	- Cache-Control/Expires: 浏览器判断缓存是否过期，未过期时，直接使用强缓存，**Cache-Control的 max-age 优先级高于 Expires**
+	- 当缓存已经过期时，使用协商缓存
+		- 唯一标识方案: Etag(response 携带) & If-None-Match(request携带，上一次返回的 Etag): 服务器判断资源是否被修改，
+		- 最后一次修改时间: Last-Modified(response) & If-Modified-Since (request，上一次返回的Last-Modified)
+			- 如果一致，则直接返回 304 通知浏览器使用缓存
+			- 如不一致，则服务端返回新的资源
+		
+	- Last-Modified 缺点：
+		- 周期性修改，但内容未变时，会导致缓存失效
+		- 最小粒度只到 s， s 以内的改动无法检测到 
+	- Etag 的优先级高于 Last-Modified
 
 ### 5. 重绘与回流
 

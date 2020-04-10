@@ -1,4 +1,16 @@
-# VS Code 插件安装
+---
+title: 编辑器
+order: 2
+group:
+  title: 通用
+  order: 2
+---
+
+## VS Code
+
+推荐的代码编辑器
+
+### 插件安装
 
 * `vscode-icons` 各种漂亮图标
 * `filesize` 左下角显示文件大小的插件

@@ -15,34 +15,25 @@ import { ClockCircleOutlined } from '@ant-design/icons';
 
 export default () => (
   <Timeline mode="alternate">
-    <Timeline.Item><a href='/fontend/javasrcipt/basic'>基础中的基础</a></Timeline.Item>
-    <Timeline.Item color="green">
-      <Button type="primary">我是 antd 的按钮</Button>
-    </Timeline.Item>
-    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-    </Timeline.Item>
-    <Timeline.Item color="red">
-      <Card title="Default size card" bodyStyle={{textAlign: 'left'}}>
-        <Timeline mode="alternate">
-          <Timeline.Item><Button type="primary" onClick={() => window.open('/fontend/javasrcipt/basic')}>基础中的基础</Button></Timeline.Item>
-          <Timeline.Item color="green">
-            <Button type="primary">我是 antd 的按钮</Button>
-          </Timeline.Item>
-          <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-            doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-            inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-          </Timeline.Item>
-        </Timeline>
-      </Card>
-    </Timeline.Item>
-    <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>
-      asjdlkfasdf
-    </Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>网络基础</Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>OS系统</Timeline.Item>
+    <Timeline.Item>语言选择</Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>数据库</Timeline.Item>
+    <Timeline.Item>接口服务</Timeline.Item>
+    <Timeline.Item>缓存</Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>网络安全</Timeline.Item>
+    <Timeline.Item>测试</Timeline.Item>
+    <Timeline.Item>CI/CD构建</Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>设计模式</Timeline.Item>
+    <Timeline.Item>搜索引擎</Timeline.Item>
+    <Timeline.Item>消息队列</Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>容器虚拟机</Timeline.Item>
+    <Timeline.Item>GraphQL</Timeline.Item>
+    <Timeline.Item>Web服务器</Timeline.Item>
+    <Timeline.Item>大数据</Timeline.Item>
+    <Timeline.Item>人工智能</Timeline.Item>
+    <Timeline.Item>物联网</Timeline.Item>
+    <Timeline.Item>区块链</Timeline.Item>
   </Timeline>
 );
 ```
