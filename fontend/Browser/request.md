@@ -2,6 +2,10 @@
 title: 网络请求
 ---
 
+## XMLHttpRequest
+
+
+
 ## Fetch
 
 Fetch 是一种新的用于获取资源的技术，它被用来代替我们已经吐槽了很久的技术（XHR）。
