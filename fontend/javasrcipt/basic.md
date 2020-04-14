@@ -124,6 +124,10 @@ let foo = function() { console.log(1) }
 	- 使用`setTimeout`包裹，通过第三个参数传入
 	- 使用 **块级作用域**，让变量成为自己上下文的属性，避免共享
 
+### this指向
+![](./this.jpg)
+[参考](https://didiheng.com/front/2019-09-12.html)
+
 ### 6. script 引入方式：
 
 - html 静态`<script>`引入
