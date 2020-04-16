@@ -3,7 +3,7 @@ title: Drex - 职业生涯规划及分享
 order: 10
 hero:
   title: Drex Career
-  desc: 职业生涯规划及分享
+  desc: 以是否能造出轮子来衡量学习标准
   actions:
     - text: 了解更多
       link: /#了解更多
