@@ -2,11 +2,11 @@
 title: Drex - 职业生涯规划及分享
 order: 10
 hero:
-  title: Drex Career
-  desc: 以是否能造出轮子来衡量学习标准
+  title: 职业生涯
+  desc: 以能否造出轮子来衡量学习标准
   actions:
     - text: 了解更多
-      link: /#了解更多
+      link: /guide
 features:
   - icon: /react.svg
     title: React
@@ -20,7 +20,7 @@ features:
 footer: Open-source MIT Licensed | Copyright © 2020-2030<br />Powered by Drex
 ---
 
-## 了解更多
+<!-- ## 了解更多
 
 手动创建第一篇文档
 
@@ -124,4 +124,4 @@ export default () => (
 
 ```jsx | inline
 import React from 'react';
-```
+``` -->
