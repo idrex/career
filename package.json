@@ -2,7 +2,7 @@
   "name": "career",
   "version": "1.0.0",
   "scripts": {
-    "start": "dumi dev",
+    "start": "dumi dev --port 9999",
     "build": "dumi build"
   },
   "devDependencies": {

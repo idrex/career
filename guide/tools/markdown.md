@@ -1,5 +1,8 @@
 ---
 title: Markdown 语法介绍
+group:
+  title: 工具
+  order: 3
 ---
 
 Markdown 是一种轻量级标记语言，能够让作者使用易读易写的纯文本格式编写文档。CODING 许多功能模块均采用了 Markdown 语法，例如任务、需求、Wiki 等。

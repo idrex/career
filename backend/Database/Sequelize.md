@@ -1,4 +1,11 @@
-# Sequelize
+---
+title: Sequelize
+order: 21
+group:
+  title: 数据库
+  order: 5
+---
+![Sequelize](https://sequelize.org/master/manual/asset/logo-small.png)
 
 Sequelize 是一个基于 promise 的 Node.js ORM, 目前支持 Postgres, MySQL, SQLite 和 Microsoft SQL Server. 它具有强大的事务支持, 关联关系, 预读和延迟加载,读取复制等功能.
 

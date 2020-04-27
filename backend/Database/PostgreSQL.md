@@ -1,5 +1,9 @@
 ---
 title: PostgreSQL
+order: 2
+group:
+  title: 数据库
+  order: 5
 ---
 
 ## 安装使用
@@ -114,8 +118,10 @@ ALTER USER postgres WITH PASSWORD 'XXXXXX'
 listen_addresses = '*'
 修改pg_hba.conf
 pg_hba.conf，位置与postgresql.conf相同，虽然上面配置允许任意地址连接PostgreSQL，但是这在pg中还不够，我们还需在pg_hba.conf中配置服务端允许的认证方式。任意编辑器打开该文件，编辑或添加下面一行。
+```bash
 # TYPE  DATABASE  USER  CIDR-ADDRESS  METHOD
 host  all  all 0.0.0.0/0 md5
+```
 默认pg只允许本机通过密码认证登录，修改为上面内容后即可以对任意IP访问进行密码验证。对照上面的注释可以很容易搞明白每列的含义，具体的支持项可以查阅文末参考引用。
 
 完成上两项配置后执行sudo service postgresql restart重启PostgreSQL服务后，允许外网访问的配置就算生效了。
