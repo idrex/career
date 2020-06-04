@@ -113,7 +113,12 @@ console.log("Hello World!");
 ## 表格
 
 示例：
+```bash
+| First Header | Second Header | Third Header |
+| :----------- | :-----------: | -----------: |
+| Left         |    Center     |        Right |
 
+```
 | First Header | Second Header | Third Header |
 | :----------- | :-----------: | -----------: |
 | Left         |    Center     |        Right |

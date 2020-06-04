@@ -45,6 +45,12 @@ $ n 12.14.0
 $ npm install yarn -g
 ```
 
+## Git
+
+```bash
+$ yum install git -y
+```
+
 ## SSL
 
 ```bash

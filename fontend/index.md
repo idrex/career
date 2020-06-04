@@ -44,7 +44,7 @@ export default () => (
 );
 ```
 
-第一阶段：
+## 第一阶段：
 HTML+CSS:
 HTML进阶、CSS进阶、div+css布局、HTML+css整站开发、
 
@@ -62,7 +62,7 @@ JQuery：基础使用
 
  
 
-第二阶段：HTML5和移动Web开发
+## 第二阶段：HTML5和移动Web开发
 HTML5：
 HTML5新语义标签、HTML5表单、音频和视频、离线和本地存储、SVG、Web Socket、Canvas.
 
@@ -77,7 +77,7 @@ Bootstrap:
 
  
 
-第三阶段：HTTP服务和AJAX编程
+## 第三阶段：HTTP服务和AJAX编程
 WEB服务器基础：
 服务器基础知识、Apache服务器和其他WEB服务器介绍、Apache服务器搭建、HTTP介绍。
 
@@ -92,7 +92,7 @@ JSON和JSON解析、数据绑定和模板技术、JSONP、跨域技术、图片�
 
  
 
-第四阶段：面向对象进阶
+## 第四阶段：面向对象进阶
 面向对象终极篇：
 从内存角度到理解JS面向对象、基本类型、复杂类型、原型链、ES6中的面向对象、属性读写权限、设置器、访问器。
 
@@ -104,7 +104,7 @@ JSON和JSON解析、数据绑定和模板技术、JSONP、跨域技术、图片�
 
  
 
-第五阶段：封装一个属于自己的框架
+## 第五阶段：封装一个属于自己的框架
 框架封装基础：
 事件流、冒泡、捕获、事件对象、事件框架、选择框架。
 
@@ -116,7 +116,7 @@ JQuery框架雏形、可扩展性、模块化、封装属于传智自己的框�
 
  
 
-第六阶段：模块化组件开发
+## 第六阶段：模块化组件开发
 面向组件编程：
 面向组件编程的方式、面向组件编程的实现原理、面向组件编程实战、基于组件化思想开发网站应用程序。
 
@@ -125,7 +125,7 @@ AMD设计规范、CMD设计规范、RequireJS，LoadJS、淘宝的SeaJS。
 
  
 
-第七阶段：主流的流行框架
+## 第七阶段：主流的流行框架
 Web开发工作流：
 GIT/SVN、Yeoman脚手架、NPM/Bower依赖管理工具、Grunt/Gulp/Webpack。
 
@@ -137,7 +137,7 @@ React.js、Vue.js、Zepto.js。
 
  
 
-第八阶段：HTML5原生移动应用开发
+## 第八阶段：HTML5原生移动应用开发
 Cordova：
 WebApp/NativeApp/HybirdApp简介、Cordova简介、与PhoneGap之间的关系、开发环境搭建、Cordova实战（创建项目，配置，编译，调试，部署发布）。
 
@@ -152,7 +152,7 @@ HTML5+中国产业联盟、HTML5 Plus Runtime环境、HBuilder开发工具、MUI
 
  
 
-第九阶段：   Node.js全栈开发：
+## 第九阶段：   Node.js全栈开发：
 快速入门：
 Node.js发展、生态圈、Io.js、Linux/Windows/OS X环境配置、REPL环境和控制台程序、异步编程，非阻塞I/O、模块概念，模块管理工具、开发流程，调试，测试。
 
