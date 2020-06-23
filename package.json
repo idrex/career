@@ -6,8 +6,8 @@
     "build": "dumi build"
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.0.5",
-    "antd": "^4.1.3",
-    "dumi": "^1.0.15"
+    "@ant-design/icons": "^4.2.1",
+    "antd": "^4.3.5",
+    "dumi": "^1.0.31"
   }
 }

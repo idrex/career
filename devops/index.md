@@ -16,12 +16,12 @@ import { ClockCircleOutlined } from '@ant-design/icons';
 
 export default () => (
   <Timeline mode="alternate">
-    <Timeline.Item>OS系统管理</Timeline.Item>
+    <Timeline.Item>OS系统</Timeline.Item>
     <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>网络安全</Timeline.Item>
     <Timeline.Item>云原生</Timeline.Item>
     <Timeline.Item>日志管理</Timeline.Item>
     <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>监控报警</Timeline.Item>
-    <Timeline.Item>云平台</Timeline.Item>
+    <Timeline.Item>Serverless</Timeline.Item>
   </Timeline>
 );
 ```

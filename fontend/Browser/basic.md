@@ -11,12 +11,12 @@ group:
 不同标签页间的通讯，本质原理就是去运用一些可以 **共享的中间介质**，因此比较常用的有以下方法:
 
 - 通过父页面`window.open()`和子页面`postMessage`
-	- 异步下，通过 `window.open('about: blank')` 和 `tab.location.href = '*'` 
-	
+  - 异步下，通过 `window.open('about: blank')` 和 `tab.location.href = '*'` 
+  
 - 设置同域下共享的`localStorage`与监听`window.onstorage`
-	- 重复写入相同的值无法触发
-	- 会受到浏览器隐身模式等的限制 
-	
+  - 重复写入相同的值无法触发
+  - 会受到浏览器隐身模式等的限制 
+  
 - 设置共享`cookie`与不断轮询脏检查(`setInterval`)
 
 - 借助服务端或者中间层实现
@@ -26,15 +26,15 @@ group:
 - 用户界面
 - 主进程 
 - 内核
-	- 渲染引擎
-	- JS 引擎
-		- 执行栈 
-	- 事件触发线程
-		- 消息队列
-			- 微任务
-			- 宏任务  
-	- 网络异步线程
-	- 定时器线程
+  - 渲染引擎
+  - JS 引擎
+    - 执行栈 
+  - 事件触发线程
+    - 消息队列
+      - 微任务
+      - 宏任务  
+  - 网络异步线程
+  - 定时器线程
 
 ### 3. 浏览器下事件循环(Event Loop)
 
@@ -50,29 +50,29 @@ group:
 - 发送请求，分析 url，设置请求报文(头，主体)
 - 服务器返回请求的文件 (html)
 - 浏览器渲染
-	- `HTML parser` => `DOM Tree`
-		- 标记化算法，进行元素状态的标记
-		- dom 树构建 
-	- `CSS parser` => `Style Tree`
-		- 解析 css 代码，生成样式树 
-	- attachment => `Render Tree`
-		- 结合 dom树 与 style树，生成渲染树
-	- layout: 布局
-	- GPU painting: 像素绘制页面
+  - `HTML parser` => `DOM Tree`
+    - 标记化算法，进行元素状态的标记
+    - dom 树构建 
+  - `CSS parser` => `Style Tree`
+    - 解析 css 代码，生成样式树 
+  - attachment => `Render Tree`
+    - 结合 dom树 与 style树，生成渲染树
+  - layout: 布局
+  - GPU painting: 像素绘制页面
 
 
 - 缓存策略: 可分为 **强缓存** 和 **协商缓存**
-	- Cache-Control/Expires: 浏览器判断缓存是否过期，未过期时，直接使用强缓存，**Cache-Control的 max-age 优先级高于 Expires**
-	- 当缓存已经过期时，使用协商缓存
-		- 唯一标识方案: Etag(response 携带) & If-None-Match(request携带，上一次返回的 Etag): 服务器判断资源是否被修改，
-		- 最后一次修改时间: Last-Modified(response) & If-Modified-Since (request，上一次返回的Last-Modified)
-			- 如果一致，则直接返回 304 通知浏览器使用缓存
-			- 如不一致，则服务端返回新的资源
-		
-	- Last-Modified 缺点：
-		- 周期性修改，但内容未变时，会导致缓存失效
-		- 最小粒度只到 s， s 以内的改动无法检测到 
-	- Etag 的优先级高于 Last-Modified
+  - Cache-Control/Expires: 浏览器判断缓存是否过期，未过期时，直接使用强缓存，**Cache-Control的 max-age 优先级高于 Expires**
+  - 当缓存已经过期时，使用协商缓存
+    - 唯一标识方案: Etag(response 携带) & If-None-Match(request携带，上一次返回的 Etag): 服务器判断资源是否被修改，
+    - 最后一次修改时间: Last-Modified(response) & If-Modified-Since (request，上一次返回的Last-Modified)
+      - 如果一致，则直接返回 304 通知浏览器使用缓存
+      - 如不一致，则服务端返回新的资源
+    
+  - Last-Modified 缺点：
+    - 周期性修改，但内容未变时，会导致缓存失效
+    - 最小粒度只到 s， s 以内的改动无法检测到 
+  - Etag 的优先级高于 Last-Modified
 
 ### 5. 重绘与回流
 
@@ -81,19 +81,19 @@ group:
 - **重绘(repaint)**: 当元素样式的改变不影响布局时，浏览器将使用重绘对元素进行更新，此时由于只需要UI层面的重新像素绘制，因此 **损耗较少**
 
 - **回流(reflow)**: 当元素的尺寸、结构或触发某些属性时，浏览器会重新渲染页面，称为回流。此时，浏览器需要重新经过计算，计算后还需要重新页面布局，因此是较重的操作。会触发回流的操作: 
-	- 页面初次渲染
-	- 浏览器窗口大小改变
-	- 元素尺寸、位置、内容发生改变
-	- 元素字体大小变化
- 	- 添加或者删除可见的 dom 元素
-	- 激活 CSS 伪类（例如：:hover）
-	- 查询某些属性或调用某些方法
-		- clientWidth、clientHeight、clientTop、clientLeft
-		- offsetWidth、offsetHeight、offsetTop、offsetLeft
-		- scrollWidth、scrollHeight、scrollTop、scrollLeft
-		- getComputedStyle()
-		- getBoundingClientRect()
-		- scrollTo()
+  - 页面初次渲染
+  - 浏览器窗口大小改变
+  - 元素尺寸、位置、内容发生改变
+  - 元素字体大小变化
+   - 添加或者删除可见的 dom 元素
+  - 激活 CSS 伪类（例如：:hover）
+  - 查询某些属性或调用某些方法
+    - clientWidth、clientHeight、clientTop、clientLeft
+    - offsetWidth、offsetHeight、offsetTop、offsetLeft
+    - scrollWidth、scrollHeight、scrollTop、scrollLeft
+    - getComputedStyle()
+    - getBoundingClientRect()
+    - scrollTo()
   
 
 **回流必定触发重绘，重绘不一定触发回流。重绘的开销较小，回流的代价较高。**
@@ -101,15 +101,15 @@ group:
 #### 最佳实践:
 
 - css
-	- 避免使用`table`布局
-	- 将动画效果应用到`position`属性为`absolute`或`fixed`的元素上
+  - 避免使用`table`布局
+  - 将动画效果应用到`position`属性为`absolute`或`fixed`的元素上
 
 - javascript 
-	- 避免频繁操作样式，可汇总后统一 **一次修改**
-	- 尽量使用`class`进行样式修改
-	- 减少`dom`的增删次数，可使用 **字符串** 或者 `documentFragment` 一次性插入
-	- 极限优化时，修改样式可将其`display: none`后修改
-	- 避免多次触发上面提到的那些会触发回流的方法，可以的话尽量用 **变量存住**
+  - 避免频繁操作样式，可汇总后统一 **一次修改**
+  - 尽量使用`class`进行样式修改
+  - 减少`dom`的增删次数，可使用 **字符串** 或者 `documentFragment` 一次性插入
+  - 极限优化时，修改样式可将其`display: none`后修改
+  - 避免多次触发上面提到的那些会触发回流的方法，可以的话尽量用 **变量存住**
 
 ### 6. 存储
 
@@ -118,14 +118,14 @@ group:
 - 短暂性的时候，我们只需要将数据存在内存中，只在运行时可用
 
 - 持久性存储，可以分为 浏览器端 与 服务器端
-	- 浏览器: 
-		- `cookie`: 通常用于存储用户身份，登录状态等
-			- http 中自动携带， 体积上限为 4K， 可自行设置过期时间
-		- `localStorage / sessionStorage`: 长久储存/窗口关闭删除， 体积限制为 4~5M
-		- `indexDB` 
-	- 服务器:
-		- 分布式缓存 redis
-		- 数据库 
+  - 浏览器: 
+    - `cookie`: 通常用于存储用户身份，登录状态等
+      - http 中自动携带， 体积上限为 4K， 可自行设置过期时间
+    - `localStorage / sessionStorage`: 长久储存/窗口关闭删除， 体积限制为 4~5M
+    - `indexDB` 
+  - 服务器:
+    - 分布式缓存 redis
+    - 数据库 
 
 ### 7. Web Worker
 
@@ -157,20 +157,20 @@ worker.onmessage = function (event) {
 垃圾回收: 将内存中不再使用的数据进行清理，释放出内存空间。V8 将内存分成 **新生代空间** 和 **老生代空间**。
 
 - **新生代空间**: 用于存活较短的对象
-	- 又分成两个空间: from 空间 与 to 空间 
-	- Scavenge GC算法: 当 from 空间被占满时，启动 GC 算法
-		- 存活的对象从 from space 转移到 to space
-		- 清空 from space
-		- from space 与 to space 互换
-		- 完成一次新生代GC
+  - 又分成两个空间: from 空间 与 to 空间 
+  - Scavenge GC算法: 当 from 空间被占满时，启动 GC 算法
+    - 存活的对象从 from space 转移到 to space
+    - 清空 from space
+    - from space 与 to space 互换
+    - 完成一次新生代GC
 - **老生代空间**: 用于存活时间较长的对象
-	- 从 新生代空间 转移到 老生代空间 的条件
-		- 经历过一次以上 Scavenge GC 的对象
-		- 当 to space 体积超过25%
-	- **标记清除算法**: 标记存活的对象，未被标记的则被释放
-		- 增量标记: 小模块标记，在代码执行间隙执，GC 会影响性能
-		- 并发标记(最新技术): 不阻塞 js 执行
-	- **压缩算法**: 将内存中清除后导致的碎片化对象往内存堆的一端移动，解决 **内存的碎片化**
+  - 从 新生代空间 转移到 老生代空间 的条件
+    - 经历过一次以上 Scavenge GC 的对象
+    - 当 to space 体积超过25%
+  - **标记清除算法**: 标记存活的对象，未被标记的则被释放
+    - 增量标记: 小模块标记，在代码执行间隙执，GC 会影响性能
+    - 并发标记(最新技术): 不阻塞 js 执行
+  - **压缩算法**: 将内存中清除后导致的碎片化对象往内存堆的一端移动，解决 **内存的碎片化**
 
 ### 9. 内存泄露
 

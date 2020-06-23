@@ -13,8 +13,6 @@ group:
 - 解构赋值
 - `class / extend`: 类声明与继承
 
-- `Set / Map`: 新的数据结构
-
 - 异步解决方案:
 
 - `Promise`的使用与实现
@@ -53,6 +51,13 @@ const user = await getUserByAsync();
 console.log(user);
 ```
 
+## Set、WeakSet、Map及WeakMap
+
+Set 和 Map 主要的应用场景在于 数据重组 和 数据储存
+Set 是一种叫做集合的数据结构，Map 是一种叫做字典的数据结构
+
+### 集合（Set）
+
 ## Symbol
 
 ## Proxy
@@ -60,6 +65,10 @@ console.log(user);
 ## Class
 
 ## Decorator
+
+## Gennrator && Async Await
+
+[参考](https://juejin.im/post/5d2c814c6fb9a07ecd3d8e43)
 
 ## Promise 标准
 

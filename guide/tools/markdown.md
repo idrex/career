@@ -138,3 +138,19 @@ Markdown 使用了类似链接的语法来插入图片，用户可以直接复�
 例如：`[Career](https://github.com/idrex/career)`
 
 > [Career](https://github.com/idrex/career)
+
+
+## 其他
+
+### 特殊符号
+&copy; &  &uml; &trade; &iexcl; &pound;
+&amp; &lt; &gt; &yen; &euro; &reg; &plusmn; &para; &sect; &brvbar; &macr; &laquo; &middot;
+
+X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;
+
+18&ordm;C  &quot;  &apos;
+
+### 数学符号
+
+上标：X<sub>2</sub>，下标：O<sup>2</sup>
+

@@ -1,10 +1,20 @@
-### linux目录结构
+---
+title: Linux
+order: 1
+group:
+  title: OS系统
+  order: 1
+---
+
+## linux目录结构
 ![linux目录结构](./linux-catalog.png "linux目录结构")
 
-### linux常用命令(命令查询: http://man.linuxde.net/)
-#### ssh远程登录：ssh
+## linux常用命令
 
-#### 新建文件或目录：touch/mkdir
+(命令查询: http://man.linuxde.net/)
+### ssh远程登录：ssh
+
+### 新建文件或目录：touch/mkdir
 * 实例
 
 创建一个hello.txt文件
@@ -16,7 +26,7 @@ touch hello.txt
 mkdir myproject
 ```
 
-#### 写入文件：echo
+### 写入文件：echo
 * 实例
 
 在hello.txt中写入Thanks
@@ -24,7 +34,7 @@ mkdir myproject
 echo Thanks > hello.txt
 ```
 
-#### 查看文件内容：cat
+### 查看文件内容：cat
 * 实例
 
 查看hello.txt中的内容
@@ -33,7 +43,7 @@ cat hello.txt
 // Thanks
 ```
 
-#### 复制文件或目录：cp
+### 复制文件或目录：cp
 * 实例
 
 复制文件hello.txt,新文件为new.txt
@@ -50,7 +60,7 @@ cp -r myproject newproject
 // -r 递归复制目录的内容
 ```
 
-#### 删除文件或目录：rm
+### 删除文件或目录：rm
 * 实例
 
 删除文件hello.txt
@@ -72,7 +82,7 @@ rm -rf myproject
 // -rf 递归删除目录的内容，不给出提示。
 ```
 
-#### 移动文件或目录：mv
+### 移动文件或目录：mv
 * 实例
 
 移动目录newproject到home目录下
@@ -85,7 +95,7 @@ ls
 // -f 强制覆盖已存在的目录或文件
 ```
 
-#### 查看文件及目录属性：ls
+### 查看文件及目录属性：ls
 * 实例
 
 查看当前目录下所有文件及目录的属性
@@ -96,7 +106,7 @@ ls -l
 // -rw-r--r--  root root 7 Apr 8 14:39 hello.txt
 ```
 
-#### 修改文件及目录权限：chmod
+### 修改文件及目录权限：chmod
 * 实例
 
 修改当前文件及目录权限

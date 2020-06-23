@@ -5,7 +5,6 @@ group:
   order: 4
 ---
 
-
 ### 1. 盒模型
 
 页面渲染时，dom 元素所采用的 **布局模型**。可通过`box-sizing`进行设置。根据计算宽高的区域可分为：
@@ -42,6 +41,8 @@ group:
 	- 自适应两栏布局
 	- 可以阻止元素被浮动元素覆盖
 
+[BFC、IFC、GFC和FFC](https://www.cnblogs.com/dingyufenglian/p/4845477.html)
+
 ### 3.层叠上下文
 
 元素提升为一个比较特殊的图层，在三维空间中 **(z轴)** 高出普通元素一等。
@@ -61,7 +62,7 @@ group:
 	- 在同一层叠上下文中，层叠等级才有意义
 	- `z-index`的优先级最高
 
-<img width="600" src="https://raw.githubusercontent.com/xd-tayde/blog/master/images/interview/4.png">
+![](./stacking.png)
 
 ### 4. 居中布局
 

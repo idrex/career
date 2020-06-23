@@ -17,7 +17,7 @@ import { ClockCircleOutlined } from '@ant-design/icons';
 export default () => (
   <Timeline mode="alternate">
     <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>网络基础</Timeline.Item>
-    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>OS系统</Timeline.Item>
+    <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>Web服务器</Timeline.Item>
     <Timeline.Item>语言选择</Timeline.Item>
     <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: "16px" }} />}>数据库</Timeline.Item>
     <Timeline.Item>接口服务</Timeline.Item>
