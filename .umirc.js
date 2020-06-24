@@ -1,7 +1,7 @@
 // 配置文件内容
 export default {
   // 配置项
-  title: 'Drex Career',
+  title: 'Drex',
   mode: 'site',
   favicon: '/logo.svg',
   logo: '/logo.svg',

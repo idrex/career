@@ -51,7 +51,7 @@ export default () => (
 );
 ```
 
-## 第一阶段：
+<!-- ## 第一阶段：
 
 HTML+CSS:
 HTML 进阶、CSS 进阶、div+css 布局、HTML+css 整站开发、
@@ -1027,4 +1027,4 @@ Single-SPA
 Numpy 实践
 Pandas 实践 #深度学习与神经网络
 TensorFlow 实践
-Pytorch 实践
+Pytorch 实践 -->

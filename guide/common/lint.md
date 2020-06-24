@@ -23,4 +23,4 @@ group:
 在你提交的文件中，执行自定义的指令。don’t let 💩 slip into your codebase. — lint-staged
 
 
-### 参考 [https://juejin.im/post/5bf36163e51d45360069e0e8]
+[参考](https://juejin.im/post/5bf36163e51d45360069e0e8)
