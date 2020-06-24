@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="/logo.svg" />
+    <link rel="stylesheet" href="/umi.css" />
+    <script>
+      window.routerBase = "/";
+    </script>
+    <script>
+      //! umi version: 3.2.3
+    </script>
+    <title>ffmpeg &#x4E0B;&#x8F7D; ts &#x6587;&#x4EF6;&#x89C6;&#x9891;</title>
+  <script>
+      window.g_useSSR = true;
+      window.g_initialProps = {};
+
+    </script>
+    </head>
+  <body>
+    <div id="root"><div class="__dumi-default-layout" data-show-sidemenu="true" data-show-slugs="true" data-site-mode="true" data-gapless="false"><div class="__dumi-default-navbar" data-mode="site"><button class="__dumi-default-navbar-toggle"></button><a class="__dumi-default-navbar-logo" style="background-image:url(&#x27;/logo.svg&#x27;)" href="/">Drex</a><nav><div class="__dumi-default-search"><input type="search" class="__dumi-default-search-input" value=""/><ul></ul></div><a href="/guide">指南</a><a href="/fontend">前端</a><a href="/backend">后端</a><a href="/devops">运维</a><a aria-current="page" class="active" href="/blog">博客</a><a target="_blank" rel="noopener noreferrer" href="https://github.com/idrex/career">GitHub<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="__dumi-default-external-link-icon"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div><div class="__dumi-default-menu" data-mode="site"><div class="__dumi-default-menu-inner"><div class="__dumi-default-menu-header"><a class="__dumi-default-menu-logo" style="background-image:url(&#x27;/logo.svg&#x27;)" href="/"></a><h1>Drex</h1><p></p></div><div class="__dumi-default-menu-mobile-area"><ul class="__dumi-default-menu-nav-list"><li><a href="/guide">指南</a></li><li><a href="/fontend">前端</a></li><li><a href="/backend">后端</a></li><li><a href="/devops">运维</a></li><li><a aria-current="page" class="active" href="/blog">博客</a></li><li><a target="_blank" rel="noopener noreferrer" href="https://github.com/idrex/career">GitHub<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="__dumi-default-external-link-icon"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div><ul class="__dumi-default-menu-list"><li><a href="/blog">推荐网站</a></li><li><a aria-current="page" class="active" href="/blog/ffmpeg">ffmpeg 下载 ts 文件视频</a></li><li><a href="/blog/record">备案相关</a></li><li><a href="/blog/video">音视频</a></li><li><a href="/blog/website">网站性能测试指标</a></li><li><a href="/blog/yarn">yarn vs npm vs cnpm</a></li><li><a href="/blog/知识产权">知识产权</a></li><li><a href="/blog/系统相关">系统相关</a></li><li><a href="/blog/部署egg应用到docker">部署egg应用到docker</a></li></ul></div></div><ul class="__dumi-default-layout-toc" role="slug-list"></ul><div class="__dumi-default-layout-content"><div class="markdown"><h1 id="ffmpeg-下载-ts-文件视频"><a aria-hidden="true" href="#ffmpeg-下载-ts-文件视频"><span class="icon icon-link"></span></a>ffmpeg 下载 ts 文件视频</h1><ol><li><p>首先使用 Chrome 打开网页，单击 F12 打开开发者工具 开始视频播放，在 F12 出来的界面中单击 Network 在 Network 中有文件列表，检查当中是否存在 m3u8 结尾的文件</p></li><li><p>如果有 m3u8 结尾的文件，把它的源地址复制下来 源地址复制下来可能分两段（两个 http），一段是跳转地址，一段是目标地址，将目标地址保留下来即可。 正确的 m3u8 文件地址大概的样子在下面的命令示例中</p></li><li><p>按照ffmpeg，Mac直接用</p></li></ol><div class="__dumi-default-code-block"><pre class="prism-code language-bash"><button title="" type="button" class="__dumi-default-icon __dumi-default-btn-copy __dumi-default-code-block-copy-btn" data-clipboard-text="$ brew install ffmpeg
+" data-status="copy"></button><div class="token-line"><span class="token plain">$ brew </span><span class="token function">install</span><span class="token plain"> ffmpeg</span></div><div class="token-line"><span class="token plain"></span></div></pre></div><ol start="4"><li><p>使用以下命令一键下载并自动合成、转码为 mp4 ffmpeg -i <a href="http://xxx.com:8891/1231/index.m3u8" target="_blank" rel="noopener noreferrer">http://xxx.com:8891/1231/index.m3u8<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="__dumi-default-external-link-icon"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> -c copy -bsf:a aac_adtstoasc output.mp4</p></li><li><p>注意事项 必须安装 ffmpeg，Linux、Mac 可以使用常规方法安装，Windows 直接去官网下载二进制包直接用、 当网页中播放的视频流是 ts 格式的时候，本方法适用。<a href="https://blog.csdn.net/realDonaldTrump/java/article/details/82697757" target="_blank" rel="noopener noreferrer">下载网页视频并自动合成视频<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="__dumi-default-external-link-icon"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></li></ol></div><div class="__dumi-default-layout-footer-meta"><span data-updated-text="Last Update: ">6/24/2020, 7:36:58 AM</span></div></div></div></div>
+
+    <script src="/umi.js"></script>
+  </body>
+</html>
