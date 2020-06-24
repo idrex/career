@@ -16,6 +16,10 @@ export default {
   resolve: {
     includes: ['']
   },
+  ssr: {
+    devServerRender: false,
+  },
+  exportStatic: {},
   extraBabelPlugins: [
     [
       'import',
