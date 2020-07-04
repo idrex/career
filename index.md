@@ -3,7 +3,7 @@ title: Drex - 职业生涯规划及分享
 order: 10
 hero:
   title: 职业生涯
-  desc: 以能否造出轮子来衡量学习标准
+  desc: 徒手撕源码，光脚造轮子
   actions:
     - text: 了解更多
       link: /guide
@@ -17,7 +17,7 @@ features:
   - icon: /serverless.svg
     title: Serverless
     desc: 面向未来的运维方式，简化应用工程的交付和操作，服务仅在使用时自动扩容和收费
-footer: Open-source MIT Licensed | Copyright © 2020-2030<br />Powered by Drex
+footer: Copyright © 2020-2030 Powered by Drex
 ---
 
 <!-- ## 了解更多
