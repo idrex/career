@@ -245,6 +245,7 @@ Webpack 中两个最重要的类 Compiler 与 Compilation 便是继承于 Tapabl
     - modules: 指定模块路径，减少递归搜索；
     - mainFields: 指定入口文件描述字段，减少搜索；
     - noParse: 避免对非模块化文件的加载；
+    
     - includes/exclude: 指定搜索范围/排除不必要的搜索范围；
     - alias: 缓存目录，避免重复寻址；
   - `babel-loader`:
@@ -261,3 +262,15 @@ Webpack 中两个最重要的类 Compiler 与 Compilation 便是继承于 Tapabl
   - `source-map`:
     - 开发: `cheap-module-eval-source-map`；
     - 生产: `hidden-source-map`；
+
+### 异步加载
+
+```js
+mapBtn.click(function() {
+  require.ensure([], function() {
+    var baidumap = require('./baidumap.js') //baidumap.js放在我们当前目录下
+  })
+})
+```
+参考：
+[webpack异步加载的原理](https://www.jianshu.com/p/d42db506ab71)

@@ -4,7 +4,58 @@ title: 网络请求
 
 ## XMLHttpRequest
 
+### Ajax
 
+传统 Ajax 指的是 XMLHttpRequest（XHR）， 最早出现的发送后端请求技术，隶属于原始js中，核心使用XMLHttpRequest对象，多个请求之间如果有先后关系的话，就会出现回调地狱。
+JQuery ajax 是对原生XHR的封装，除此以外还增添了对JSONP的支持。经过多年的更新维护，真的已经是非常的方便了，优点无需多言；如果是硬要举出几个缺点，那可能只有：
+
+1. 本身是针对MVC的编程,不符合现在前端MVVM的浪潮
+2. 基于原生的XHR开发，XHR本身的架构不清晰。
+3. JQuery整个项目太大，单纯使用ajax却要引入整个JQuery非常的不合理（采取个性化打包的方案又不能享受CDN服务）
+4. 不符合关注分离（Separation of Concerns）的原则
+5. 配置和调用方式非常混乱，而且基于事件的异步模型不友好。
+
+```js
+$.ajax({
+   type: 'POST',
+   url: url,
+   data: data,
+   dataType: dataType,
+   success: function () {},
+   error: function () {}
+});
+```
+
+### axios
+
+axios 是一个基于Promise 用于浏览器和 nodejs 的 HTTP 客户端，本质上也是对原生XHR的封装，只不过它是Promise的实现版本，符合最新的ES规范，它本身具有以下特征：
+
+1. 从浏览器中创建 XMLHttpRequest
+2. 支持 Promise API
+3. 客户端支持防止CSRF
+4. 提供了一些并发请求的接口（重要，方便了很多的操作）
+5. 从 node.js 创建 http 请求
+6. 拦截请求和响应
+7. 转换请求和响应数据
+8. 取消请求
+9. 自动转换JSON数据
+
+```js
+axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone'
+    }
+})
+.then(function (response) {
+    console.log(response);
+})
+.catch(function (error) {
+    console.log(error);
+});
+```
 
 ## Fetch
 
@@ -596,7 +647,6 @@ function request(url, options = {}) {
 建议：在整体了解了 fetch 之后，希望同学们能够读一下 github polyfill 源码。在读代码的同时，可以同时参考 Fetch 规范。
 
 参考：
-
 MDN Fetch: https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API
 Fetch 规范: https://fetch.spec.whatwg.org/
 示例代码

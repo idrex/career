@@ -9,5 +9,8 @@
     "@ant-design/icons": "^4.2.1",
     "antd": "^4.3.5",
     "dumi": "^1.0.31"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12"
   }
 }

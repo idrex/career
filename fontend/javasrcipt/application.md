@@ -5,9 +5,11 @@ group:
   order: 5
 ---
 
+## 字符串(String)
 
+## 对象(Object)
 
-## 21. 数组(array)
+## 数组(array)
 
 - `map`: 遍历数组，返回回调返回值组成的新数组
 
@@ -25,7 +27,7 @@ group:
 - `indexOf / lastIndexOf(value, fromIndex)`: 查找数组项，返回对应的下标
 - `reduce / reduceRight(fn(prev, cur)， defaultPrev)`: 两两执行，prev 为上次化简函数的`return`值，cur 为当前值(从第二项开始)
 
-- 数组乱序：
+### 数组乱序：
 
 ```js
 var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -34,7 +36,7 @@ arr.sort(function() {
 });
 ```
 
-- 数组拆解: flat: [1,[2,3]] --> [1, 2, 3]
+### 数组拆解: flat: [1,[2,3]] --> [1, 2, 3]
 
 ```js
 Array.prototype.flat = function() {
@@ -42,4 +44,25 @@ Array.prototype.flat = function() {
     .split(",")
     .map((item) => +item);
 };
+```
+
+### 数组去重
+
+```js
+[...new Set(array)]
+Array.from(new Set(array))
+```
+
+### 数组扁平化
+
+```js
+[[1, 2], 3].flat(number || Infinity)
+```
+
+### 数组克隆
+
+```js
+arr2 = [...arr1]
+arr1.concat(arr2)
+Object.assign(arr1, arr2)
 ```
