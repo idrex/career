@@ -5,7 +5,7 @@ group:
   order: 5
 ---
 
-## ES6 & ES Next
+# ES6 & ES Next
 
 由于 Babel 的强大和普及，现在 ES6/ES7 基本上已经是现代化开发的必备了。通过新的语法糖，能让代码整体更为简洁和易读。
 

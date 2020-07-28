@@ -1179,6 +1179,11 @@ function readState(key) {
 
 ![](./react_pref.webp)
 
+### 性能检查
+
+参考
+[精读《React 性能调试》](https://juejin.im/post/5ea667cbf265da47c7122bdb)
+
 ### 单组件优化
 
 - `render`里面尽量减少新建变量和`bind`函数，传递参数是尽量减少传递参数的数量。

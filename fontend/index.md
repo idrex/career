@@ -43,9 +43,9 @@ export default () => (
     </Timeline.Item>
     <Timeline.Item>GraphQL</Timeline.Item>
     <Timeline.Item color="green">静态站点生成器</Timeline.Item>
-    <Timeline.Item>移动应用</Timeline.Item>
-    <Timeline.Item>桌面应用</Timeline.Item>
-    <Timeline.Item>数据可视化/XR</Timeline.Item>
+    <Timeline.Item>移动&桌面应用</Timeline.Item>
+    <Timeline.Item>数据可视化</Timeline.Item>
+    <Timeline.Item>VR/AR/XR/MR</Timeline.Item>
     <Timeline.Item>工程体系</Timeline.Item>
   </Timeline>
 );

@@ -287,3 +287,7 @@ worker.onmessage = function (event) {
 - **dom 引用**: dom 元素被删除时，内存中的引用未被正确清空
 
 可用 chrome 中的 timeline 进行内存标记，可视化查看内存的变化情况，找出异常点。
+
+
+参考
+[How browsers work](http://taligarsiel.com/Projects/howbrowserswork1.htm)

@@ -245,3 +245,6 @@ $ node --experimental-modules my-app.mjs
 | 循环引用 | ES6模块是动态引用。只要两个模块之间存在某个引用，代码就能够执行 | 脚本代码在require的时候，就会全部执行。一旦出现某个模块被"循环加载"，就只输出已经执行的部分，还未执行的部分不会输出。 |
 | this | this 指向undefined | this 指向当前模块 |
 
+参考
+[Node 中如何引入一个模块及其细节](https://mp.weixin.qq.com/s/TMmuAKWkOqWlwPB56Ff02A)
+

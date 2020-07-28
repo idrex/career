@@ -25,17 +25,17 @@ Javascript 是一种基于对象（object-based）的语言。但是，它又不
 
 ### 特性
 
-JavaScript脚本语言具有以下特点:
+JavaScript 脚本语言具有以下特点:
 
-1. 脚本语言。JavaScript是一种解释型的脚本语言,C、C++等语言先编译后执行,而JavaScript是在程序的运行过程中逐行进行解释。
-2. 基于对象。JavaScript是一种基于对象的脚本语言,它不仅可以创建对象,也能使用现有的对象。
-3. 简单。JavaScript语言中采用的是弱类型的变量类型,对使用的数据类型未做出严格的要求,是基于Java基本语句和控制的脚本语言,其设计简单紧凑。
-4. 动态性。JavaScript是一种采用事件驱动的脚本语言,它不需要经过Web服务器就可以对用户的输入做出响应。在访问一个网页时,鼠标在网页中进行鼠标点击或上下移、窗口移动等操作JavaScript都可直接对这些事件给出相应的响应。
-5. 跨平台性。JavaScript脚本语言不依赖于操作系统,仅需要浏览器的支持。因此一个JavaScript脚本在编写后可以带到任意机器上使用,前提上机器上的浏览器支 持JavaScript脚本语言,JavaScript已被大多数的浏览器所支持。
+1. 脚本语言。JavaScript 是一种解释型的脚本语言,C、C++等语言先编译后执行,而 JavaScript 是在程序的运行过程中逐行进行解释。
+2. 基于对象。JavaScript 是一种基于对象的脚本语言,它不仅可以创建对象,也能使用现有的对象。
+3. 简单。JavaScript 语言中采用的是弱类型的变量类型,对使用的数据类型未做出严格的要求,是基于 Java 基本语句和控制的脚本语言,其设计简单紧凑。
+4. 动态性。JavaScript 是一种采用事件驱动的脚本语言,它不需要经过 Web 服务器就可以对用户的输入做出响应。在访问一个网页时,鼠标在网页中进行鼠标点击或上下移、窗口移动等操作 JavaScript 都可直接对这些事件给出相应的响应。
+5. 跨平台性。JavaScript 脚本语言不依赖于操作系统,仅需要浏览器的支持。因此一个 JavaScript 脚本在编写后可以带到任意机器上使用,前提上机器上的浏览器支 持 JavaScript 脚本语言,JavaScript 已被大多数的浏览器所支持。
 
-不同于服务器端脚本语言，例如PHP与ASP，JavaScript主要被作为客户端脚本语言在用户的浏览器上运行，不需要服务器的支持。所以在早期程序员比较青睐于JavaScript以减少对服务器的负担，而与此同时也带来另一个问题：安全性。
+不同于服务器端脚本语言，例如 PHP 与 ASP，JavaScript 主要被作为客户端脚本语言在用户的浏览器上运行，不需要服务器的支持。所以在早期程序员比较青睐于 JavaScript 以减少对服务器的负担，而与此同时也带来另一个问题：安全性。
 
-而随着服务器的强壮，虽然程序员更喜欢运行于服务端的脚本以保证安全，但JavaScript仍然以其跨平台、容易上手等优势大行其道。同时，有些特殊功能（如AJAX）必须依赖Javascript在客户端进行支持。
+而随着服务器的强壮，虽然程序员更喜欢运行于服务端的脚本以保证安全，但 JavaScript 仍然以其跨平台、容易上手等优势大行其道。同时，有些特殊功能（如 AJAX）必须依赖 Javascript 在客户端进行支持。
 
 ## 2 原型 / 构造函数 / 实例 / 原型链
 
@@ -262,23 +262,171 @@ instance.[__proto__...] === instance.constructor.prototype
 
 ## 9 继承
 
+面向对象编程很重要的一个方面，就是对象的继承。A 对象通过继承 B 对象，就能直接拥有 B 对象的所有属性和方法。这对于代码的复用是非常有用的。
+大部分面向对象的编程语言，都是通过“类”（class）实现对象的继承。传统上，JavaScript 语言的继承不通过 class(ES6 引入了 class 语法)，而是通过“原型对象”（prototype）实现。那么在 JS 中常见的继承方式有几种呢？
+
+### 原型链继承
+
 在 JS 中，继承通常指的便是 **原型链继承**，也就是通过指定原型，并可以通过原型链继承原型上的属性或者方法。
 
-- 最优化: **圣杯模式**
+1. 引用类型的属性被所有实例共享
+2. 在创建 Child 的实例时，不能向Parent传参
 
 ```js
-var inherit = (function(c, p) {
-  var F = function() {};
-  return function(c, p) {
-    F.prototype = p.prototype;
-    c.prototype = new F();
-    c.uber = p.prototype;
-    c.prototype.constructor = c;
-  };
-})();
+function Parent() {
+  this.names = ["kevin", "daisy"];
+}
+
+function Child() {}
+
+Child.prototype = new Parent();
+
+var child1 = new Child();
+
+child1.names.push("yayu");
+
+console.log(child1.names); // ["kevin", "daisy", "yayu"]
+
+var child2 = new Child();
+
+console.log(child2.names); // ["kevin", "daisy", "yayu"]
 ```
 
-- 使用 ES6 的语法糖 `class / extends`
+### 借用构造函数(经典继承)
+
+优点：
+
+1. 避免了引用类型的属性被所有实例共享
+2. 可以在 Child 中向 Parent 传参
+
+缺点：
+
+方法都在构造函数中定义，每次创建实例都会创建一遍方法。
+
+```js
+function Parent(name) {
+  this.name = name;
+}
+
+function Child(name) {
+  Parent.call(this, name);
+}
+
+var child1 = new Child("kevin");
+
+console.log(child1.name); // kevin
+
+var child2 = new Child("daisy");
+
+console.log(child2.name); // daisy
+```
+
+### 组合继承
+
+原型链继承和经典继承双剑合璧。融合原型链继承和构造函数的优点，是 JavaScript 中最常用的继承模式。
+
+```js
+function Parent(name) {
+  this.name = name;
+  this.colors = ["red", "blue", "green"];
+}
+
+Parent.prototype.getName = function() {
+  console.log(this.name);
+};
+
+function Child(name, age) {
+  Parent.call(this, name);
+
+  this.age = age;
+}
+
+Child.prototype = new Parent();
+Child.prototype.constructor = Child;
+
+var child1 = new Child("kevin", "18");
+
+child1.colors.push("black");
+
+console.log(child1.name); // kevin
+console.log(child1.age); // 18
+console.log(child1.colors); // ["red", "blue", "green", "black"]
+
+var child2 = new Child("daisy", "20");
+
+console.log(child2.name); // daisy
+console.log(child2.age); // 20
+console.log(child2.colors); // ["red", "blue", "green"]
+```
+
+### 原型式继承
+
+就是 ES5 Object.create 的模拟实现，将传入的对象作为创建的对象的原型。包含引用类型的属性值始终都会共享相应的值，这点跟原型链继承一样。
+
+```js
+var person = {
+    name: 'kevin',
+    friends: ['daisy', 'kelly']
+}
+
+var person1 = createObj(person);
+var person2 = createObj(person);
+
+person1.name = 'person1'; // 给person1添加了 name 值，并非修改了原型上的 name 值
+console.log(person2.name); // kevin 
+
+person1.firends.push('taylor');
+console.log(person2.friends); // ["daisy", "kelly", "taylor"]
+```
+
+### 寄生式继承
+
+创建一个仅用于封装继承过程的函数，该函数在内部以某种形式来做增强对象，最后返回对象。
+缺点：跟借用构造函数模式一样，每次创建对象都会创建一遍方法。
+
+```js
+function createObj (o) {
+    var clone = Object.create(o);
+    clone.sayName = function () {
+        console.log('hi');
+    }
+    return clone;
+}
+```
+
+### 寄生组合式继承
+
+这种方式的高效率体现它只调用了一次 `Parent` 构造函数，并且因此避免了在 `Parent.prototype` 上面创建不必要的、多余的属性。与此同时，原型链还能保持不变；因此，还能够正常使用 `instanceof` 和 `isPrototypeOf`。开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。
+
+```js
+function Parent (name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+
+Parent.prototype.getName = function () {
+    console.log(this.name)
+}
+
+function Child (name, age) {
+    Parent.call(this, name);
+    this.age = age;
+}
+function object(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+}
+
+function prototype(child, parent) {
+    var prototype = object(parent.prototype);
+    prototype.constructor = child;
+    child.prototype = prototype;
+}
+
+// 当我们使用的时候：
+prototype(Child, Parent);
+```
 
 ## 10 类型转换
 

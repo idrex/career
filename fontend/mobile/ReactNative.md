@@ -1,7 +1,7 @@
 ---
 title: React Native
 group:
-  title: 移动应用
+  title: 移动&桌面应用
   order: 10
 ---
 
