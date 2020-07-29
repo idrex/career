@@ -1203,6 +1203,62 @@ description?: string | undefined;
 }
 ```
 
+7. Pick 部分选择
+
+在某些应用场景下，我们可能需要从一个已声明的类型中抽取出一个子类型，在子类型中包含父类型中的部分或全部属性，这时我们可以使用Pick来实现，示例代码如下：
+
+```js
+// 该类型已内置在TypeScript中
+type Pick<T, K extends keyof T> = {
+    [P in K]: T[P]
+};
+
+interface User {
+    id: number;
+    name: string;
+    age: number;
+    gender: number;
+    email: string;
+}
+
+type PickUser = Pick<User, "id" | "name" | "gender">;
+// 等价于
+type PickUser = {
+    id: number;
+    name: string;
+    gender: number;
+};
+
+let user: PickUser = {
+    id: 1,
+    name: 'tom',
+    gender: 1
+};
+```
+
+8. Exclude 属性排除
+与Pick相反，Pick用于拣选出我们需要关心的属性，而Exclude用于排除掉我们不需要关心的属性，示例如下：
+
+```js
+// 该类型已内置在TypeScript中
+// 这里使用了条件类型(Conditional Type)，和JS中的三目运算符效果一致
+type Exclude<T, U> = T extends U ? never : T;
+
+interface User {
+    id: number;
+    name: string;
+    age: number;
+    gender: number;
+    email: string;
+}
+
+type keys = keyof User; // -> "id" | "name" | "age" | "gender" | "email"
+
+type ExcludeUser = Exclude<keys, "age" | "email">;
+// 等价于
+type ExcludeUser = "id" | "name" | "gender";
+```
+
 ## TypeScript 装饰器
 
 ### 装饰器是什么
@@ -1520,4 +1576,6 @@ compilerOptions 每个选项的详细说明如下：
 }
 ```
 
-参考：[通俗易懂的 TypeScript 入门教程](https://mp.weixin.qq.com/s/13Zq_NucuqRvg-CGgk6K2A)
+参考：
+[通俗易懂的 TypeScript 入门教程](https://mp.weixin.qq.com/s/13Zq_NucuqRvg-CGgk6K2A)
+[TypeScript高级用法详解](https://www.cnblogs.com/tangshiwei/p/12052494.html)

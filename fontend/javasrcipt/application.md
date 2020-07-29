@@ -76,31 +76,30 @@ s1 + s2 + s3; // "33"
 - `String.prototype.substr(start_index[, string_length])`: `substr`方法用于从原字符串取出子字符串并返回，不改变原字符串，跟`slice`和`substring`方法的作用相同。
 
 ```js
-'JavaScript'.substring(0, 4) // "Java"
-'JavaScript'.substring(4) // "Script"
+"JavaScript".substring(0, 4); // "Java"
+"JavaScript".substring(4); // "Script"
 // 如果第一个参数大于第二个参数，substring方法会自动更换两个参数的位置。
-'JavaScript'.substring(10, 4) // "Script"
+"JavaScript".substring(10, 4); // "Script"
 // 如果参数是负数，substring方法会自动将负数转为0。
-'JavaScript'.substring(-3) // "JavaScript"
-'JavaScript'.substring(4, -3) // "Java"
+"JavaScript".substring(-3); // "JavaScript"
+"JavaScript".substring(4, -3); // "Java"
 
-'JavaScript'.substr(4, 6) // "Script"
-'JavaScript'.substr(4) // "Script"
+"JavaScript".substr(4, 6); // "Script"
+"JavaScript".substr(4); // "Script"
 // 如果第一个参数是负数，表示倒数计算的字符位置。如果第二个参数是负数，将被自动转为0，因此会返回空字符串。
-'JavaScript'.substr(-6) // "Script"
-'JavaScript'.substr(4, -1) // ""
+"JavaScript".substr(-6); // "Script"
+"JavaScript".substr(4, -1); // ""
 ```
 
 - `String.prototype.indexOf(string[, index])`: `indexOf`方法用于确定一个字符串在另一个字符串中第一次出现的位置，返回结果是匹配开始的位置。如果返回-1，就表示不匹配。
 - `String.prototype.lastIndexOf()`: `lastIndexOf` 从尾部开始匹配，同`indexOf`
 
 ```js
-'hello world'.indexOf('o') // 4
-'JavaScript'.indexOf('script') // -1
-'hello world'.indexOf('o', 6) // 7
-'hello world'.lastIndexOf('o') // 7
-'hello world'.lastIndexOf('o', 6) // 4
-
+"hello world".indexOf("o"); // 4
+"JavaScript".indexOf("script"); // -1
+"hello world".indexOf("o", 6); // 7
+"hello world".lastIndexOf("o"); // 7
+"hello world".lastIndexOf("o", 6); // 4
 ```
 
 - `String.prototype.trim()`: `trim`方法用于去除字符串两端的空格，返回一个新字符串，不改变原字符串。
@@ -126,41 +125,75 @@ s1 + s2 + s3; // "33"
 - `String.prototype.search()`: `search`方法的用法基本等同于`match`，但是返回值为匹配的第一个位置。如果没有找到匹配，则返回-1。
 
 ```js
-'cat, bat, sat, fat'.match('at') // ["at"]
-'cat, bat, sat, fat'.match('xt') // null
-var matches = 'cat, bat, sat, fat'.match('at');
-matches.index // 1
-matches.input // "cat, bat, sat, fat"
+"cat, bat, sat, fat".match("at"); // ["at"]
+"cat, bat, sat, fat".match("xt"); // null
+var matches = "cat, bat, sat, fat".match("at");
+matches.index; // 1
+matches.input; // "cat, bat, sat, fat"
 
-'cat, bat, sat, fat'.search('at') // 1
+"cat, bat, sat, fat".search("at"); // 1
 ```
 
 - `String.prototype.replace()`: `replace`方法用于替换匹配的子字符串，一般情况下只替换第一个匹配（除非使用带有`g`修饰符的正则表达式）。
 
 ```js
-'aaa'.replace('a', 'b') // "baa"
+"aaa".replace("a", "b"); // "baa"
 ```
 
 - `String.prototype.split(string[, number])`: `split` 方法按照给定规则分割字符串，返回一个由分割出来的子字符串组成的数组。
 
 ```js
-'a|b|c'.split('|') // ["a", "b", "c"]
-'a|b|c'.split() // ["a|b|c"]
-'a||c'.split('|') // ['a', '', 'c']
-'|b|c'.split('|') // ["", "b", "c"]
-'a|b|'.split('|') // ["a", "b", ""]
+"a|b|c".split("|"); // ["a", "b", "c"]
+"a|b|c".split(); // ["a|b|c"]
+"a||c".split("|"); // ['a', '', 'c']
+"|b|c".split("|"); // ["", "b", "c"]
+"a|b|".split("|"); // ["a", "b", ""]
 // split方法还可以接受第二个参数，限定返回数组的最大成员数。
-'a|b|c'.split('|', 0) // []
-'a|b|c'.split('|', 1) // ["a"]
-'a|b|c'.split('|', 2) // ["a", "b"]
-'a|b|c'.split('|', 3) // ["a", "b", "c"]
-'a|b|c'.split('|', 4) // ["a", "b", "c"]
-
+"a|b|c".split("|", 0); // []
+"a|b|c".split("|", 1); // ["a"]
+"a|b|c".split("|", 2); // ["a", "b"]
+"a|b|c".split("|", 3); // ["a", "b", "c"]
+"a|b|c".split("|", 4); // ["a", "b", "c"]
 ```
 
-- `String.prototype.localeCompare()`: `localeCompare` 方法用于比较两个字符串。它返回一个整数，如果小于0，表示第一个字符串小于第二个字符串；如果等于0，表示两者相等；如果大于0，表示第一个字符串大于第二个字符串。
+- `String.prototype.localeCompare()`: `localeCompare` 方法用于比较两个字符串。它返回一个整数，如果小于 0，表示第一个字符串小于第二个字符串；如果等于 0，表示两者相等；如果大于 0，表示第一个字符串大于第二个字符串。
 
 ## 对象(Object)
+
+`JavaScript` 原生提供`Object`对象（注意起首的 O 是大写），本章介绍该对象原生的各种方法。
+
+`JavaScript` 的所有其他对象都继承自`Object`对象，即那些对象都是`Object`的实例。
+
+`Object`对象的原生方法分成两类：`Object`本身的方法与`Object`的实例方法。
+
+### 构造函数
+
+`Object`不仅可以当作工具函数使用，还可以当作构造函数使用，即前面可以使用`new`命令。
+
+### 静态方法
+
+- `Object.keys()`:
+- `Object.getOwnPropertyNames()`:
+
+**对象属性模型的相关方法**
+
+- `Object.getOwnPropertyDescriptor()`: 获取某个属性的描述对象。
+- `Object.defineProperty()`: 通过描述对象，定义某个属性。
+- `Object.defineProperties()`: 通过描述对象，定义多个属性。
+
+**控制对象状态的方法**
+
+- `Object.preventExtensions()`: 防止对象扩展。
+- `Object.isExtensible()`: 判断对象是否可扩展。
+- `Object.seal()`: 禁止对象配置。
+- `Object.isSealed()`: 判断一个对象是否可配置。
+- `Object.freeze()`: 冻结一个对象。
+- `Object.isFrozen()`: 判断一个对象是否被冻结。
+
+**原型链相关方法**
+
+- `Object.create()`: 该方法可以指定原型对象和属性，返回一个新的对象。
+- `Object.getPrototypeOf()`: 获取对象的`Prototype`对象。
 
 ## 数组(array)
 

@@ -123,6 +123,9 @@ var performance = {
 };
 ```
 
+## CORS 跨域资源共享
+
+
 ## Web API
 
 ### Web Worker
@@ -135,7 +138,7 @@ Web Worker 作为浏览器多线程技术, 在页面内容不断丰富, 功能�
 
 `Fullscreen API` 让我们能够在 `Web app` 中启用全屏模式。它使你可以选择要在全屏模式下查看的元素。在 `Android` 手机中，它将删除浏览器窗口和 `Android` 顶部状态栏（显示网络状态，电池状态等的地方）。
 
-
+[跨域资源共享 CORS 详解](http://www.ruanyifeng.com/blog/2016/04/cors.html)
 [Web API 接口参考](https://developer.mozilla.org/zh-CN/docs/Web/API)
 [Web Worker 使用教程](http://www.ruanyifeng.com/blog/2018/07/web-worker.html)
 [Web Worker 文献综述](https://mp.weixin.qq.com/s/MyRRIbn-UoruVD1dpvD-QQ)
