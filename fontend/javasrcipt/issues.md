@@ -250,6 +250,34 @@ var findFibonacci = function(A) {
 </html>
 ```
 
+### 实现一个同时允许任务数量最大为n的函数
+
+```js
+function limitRunTask(tasks, num) {
+  return new Promise((resolve, reject) => {
+    let res = [], finish = 0, index = 0, start = 0;
+    function run() {
+
+      if (tasks.length === finish) {
+        resolve(res)
+        return;
+      }
+      while(start < num && index < tasks.length) {
+          start++
+          const cur = index
+        Promise.resolve(tasks[index++]).then(v => {
+            start--
+            finish++
+            res[cur] = v
+            run()
+        }).catch(error => reject(error))
+      }
+    }
+    run()
+  })
+}
+```
+
 
 
 

@@ -199,7 +199,10 @@ matches.input; // "cat, bat, sat, fat"
 
 ### 静态方法
 
+- `Array([any[, any]])`: 创建一个数组
+- `Array.of()`: 
 - `Array.isArray(obj)`: 接收一个参数，返回一个布尔值，表示参数是否为数组
+- `Array.from(arrayLike[, mapFn[, thisArg]])`: 转化成数组
 
 ### 实例方法
 
