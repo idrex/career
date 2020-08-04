@@ -539,6 +539,7 @@ obj[type]();
   - 任务的 分割异步 或 web worker 执行；
 
 参考
+[浏览器工作原理-渲染流程篇](https://juejin.im/post/6847902222349500430#heading-8)
 [如何记录加载一个页面的时间](https://www.jianshu.com/p/5b16732ab68f)
 [Chrome First Point](http://eux.baidu.com/blog/fe/Chrome%E7%9A%84First%20Paint)
 [](https://www.cnblogs.com/wangyongjie/p/chrome-devtools-mian-ban-quan-gong-lue.html)

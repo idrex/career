@@ -278,6 +278,9 @@ function limitRunTask(tasks, num) {
 }
 ```
 
+参考
+[送你21道高频JavaScript手写面试题](https://juejin.im/post/5f221df46fb9a07eaa40df0d)
+
 
 
 

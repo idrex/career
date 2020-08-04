@@ -1,6 +1,6 @@
 # 浏览器模型
 
-## windows 窗体
+## window 属性
 
 ### location 对象
 
@@ -123,6 +123,15 @@ var performance = {
 };
 ```
 
+## window 方法
+
+### 绘制方法
+- [window.requestIdleCallback(callback[, options])](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback): 在浏览器的空闲时段内调用的函数排队，这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间 `timeout`，则有可能为了在超时前执行函数而打乱执行顺序。
+- [window.cancelIdleCallback(handle)](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/cancelIdleCallback): 方法用于取消之前调用 `window.requestIdleCallback()` 的回调
+
+- [window.requestAnimationFrame(callback)](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame): 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行
+- [window.mozCancelAnimationFrame(requestID)](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/cancelAnimationFrame): 取消一个先前通过调用 `window.requestAnimationFrame()` 方法添加到计划中的动画帧请求.
+
 ## CORS 跨域资源共享
 
 
@@ -131,6 +140,37 @@ var performance = {
 ### Web Worker
 
 Web Worker 作为浏览器多线程技术, 在页面内容不断丰富, 功能日趋复杂的当下, 成为缓解页面卡顿, 提升应用性能的可选方案.
+HTML5 中的 Web Worker 可以分为两种不同线程类型，一个是专用线程 Dedicated Worker，一个是共享线程 Shared Worker。两种类型的线程各有不同的用途。下面对这两种工作线程作了详细的说明和描述。
+
+#### 专用线程：Dedicated Worker
+
+```js
+// 创建专用线程示例代码
+var worker = new Worker('dedicated.js');
+// 接收来至工作线程示例代码
+worker.onmessage = function (event) { ... };
+// 高效的发送 ArrayBuffer 数据代码
+worker.postMessage({ 
+ operation: 'list_all_users', 
+ //ArrayBuffer object 
+ input: buffer, 
+ threshold: 0.8, 
+}, [buffer]);
+```
+
+#### 共享线程 Shared Worker
+
+```js
+// 创建共享线程的代码示例如下
+var worker = new SharedWorker('sharedworker.js', ’ mysharedworker ’ );
+// 从端口接收数据 , 包括文本数据以及结构化数据
+worker.port.onmessage = function (event) { define your logic here... }; 
+// 向端口发送普通文本数据
+worker.port.postMessage('put your message here … '); 
+// 向端口发送结构化数据
+worker.port.postMessage({ username: 'usertext'; live_city: 
+['data-one', 'data-two', 'data-three','data-four']});
+```
 
 ### Service Worker
 

@@ -160,7 +160,10 @@ TCP 协议头部没有经过任何加密和认证，所以在传输过程中很�
 - 端口 443
 
 
-参考：https://www.jianshu.com/p/1d39fd9f1917
+参考：
+[HTTP的发展史--从1.0到3.0都经历了什么](https://www.jianshu.com/p/1d39fd9f1917)
+[https连接的前几毫秒发生了什么](https://www.rrfed.com/2017/02/03/https/)
+[从Chrome源码看HTTPS](https://www.rrfed.com/2018/02/26/chrome-https/)
 
 ## TCP/UDP协议
 

@@ -69,6 +69,18 @@ mb.bar();
 
 最后通过 node 来执行模块。
 
+```js
+(function(exports, require, module, __filename, __dirname) {
+    // module: 表示当前模块
+    // __filename: 当前模块的带有完整绝对路径的文件名
+    // __dirname: 当前模块的完整绝对路径
+    module.exports = exports = this = {};
+    // 我们的代码就在这里...
+    return module.exports;
+})()
+
+```
+
 ## AMD && Require.js
 
 AMD(Asynchronous Module Definition - 异步加载模块定义)规范，制定了定义模块的规则,一个单独的文件就是一个模块，模块和模块的依赖可以被异步加载。主要运行于浏览器端，这和浏览器的异步加载模块的环境刚好适应，它不会影响后面语句的运行。该规范是在 RequireJs 的推广过程中逐渐完善的。
