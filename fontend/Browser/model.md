@@ -144,6 +144,8 @@ HTML5 中的 Web Worker 可以分为两种不同线程类型，一个是专用�
 
 #### 专用线程：Dedicated Worker
 
+**主线程**
+
 ```js
 // 创建专用线程示例代码
 var worker = new Worker('dedicated.js');
@@ -156,6 +158,31 @@ worker.postMessage({
  input: buffer, 
  threshold: 0.8, 
 }, [buffer]);
+// 关闭
+worker.terminate();
+```
+
+**子线程**
+
+```js
+// 写法一
+self.addEventListener('message', function (e) {
+  self.postMessage('You said: ' + e.data);
+}, false);
+// 写法二
+this.addEventListener('message', function (e) {
+  this.postMessage('You said: ' + e.data);
+}, false);
+// 写法三
+addEventListener('message', function (e) {
+  postMessage('You said: ' + e.data);
+}, false);
+
+// 加载脚本
+importScripts('script1.js');
+
+// 关闭
+self.close();
 ```
 
 #### 共享线程 Shared Worker
