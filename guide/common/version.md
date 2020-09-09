@@ -66,3 +66,7 @@ git config --global user.email xxx
      remotes = remote -v
      lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 ```
+
+[Git 工作流](http://www.ruanyifeng.com/blog/2015/12/git-workflow.html)
+
+[git flow](https://www.jianshu.com/p/41910dc6ef29)

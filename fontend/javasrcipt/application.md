@@ -172,8 +172,24 @@ matches.input; // "cat, bat, sat, fat"
 
 ### 静态方法
 
-- `Object.keys()`:
-- `Object.getOwnPropertyNames()`:
+- `Object.keys()`: 遍历对象的属性，方法只返回可枚举的属性
+- `Object.getOwnPropertyNames()`: 遍历对象的属性，返回所有属性
+
+```js
+var obj = {
+  p1: 123,
+  p2: 456
+};
+
+Object.keys(obj) // ["p1", "p2"]
+Object.getOwnPropertyNames(obj) // ["p1", "p2"]
+
+var a = ['Hello', 'World'];
+
+Object.keys(a) // ["0", "1"]
+Object.getOwnPropertyNames(a) // ["0", "1", "length"]
+```
+
 
 **对象属性模型的相关方法**
 
@@ -194,6 +210,22 @@ matches.input; // "cat, bat, sat, fat"
 
 - `Object.create()`: 该方法可以指定原型对象和属性，返回一个新的对象。
 - `Object.getPrototypeOf()`: 获取对象的`Prototype`对象。
+
+### 实例方法
+
+- `Object.prototype.valueOf()`: 返回当前对象对应的值。
+- `Object.prototype.toString()`: 返回当前对象对应的字符串形式。
+- `Object.prototype.toLocaleString()`: 返回当前对象对应的本地字符串形式。
+- `Object.prototype.hasOwnProperty()`: 判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性。
+- `Object.prototype.isPrototypeOf()`: 判断当前对象是否为另一个对象的原型。
+- `Object.prototype.propertyIsEnumerable()`: 判断某个属性是否可枚举。
+
+```js
+const type = function(o) {
+  const s = Object.prototype.toString.call(o)
+  return s.match(/\[object (.*?)\]/)[1].toLowerCase()
+}
+```
 
 ## 数组(array)
 
@@ -273,6 +305,12 @@ arr2 = [...arr1];
 arr1.concat(arr2);
 Object.assign(arr1, arr2);
 ```
+
+## 原生函数
+
+### Call
+
+
 
 参考
 [从Chrome源码看JS Object的实现](https://www.rrfed.com/2017/04/04/chrome-object/)

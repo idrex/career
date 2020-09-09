@@ -201,6 +201,18 @@ worker.port.postMessage({ username: 'usertext'; live_city:
 
 ### Service Worker
 
+Service Worker 首先是一个运行在后台的 Worker 线程，然后它会长期运行，充当一个服务，很适合那些不需要网页或用户互动的功能。它的最常见用途就是拦截和处理网络请求。
+
+Service Worker 是一个后台运行的脚本，充当一个代理服务器，拦截用户发出的网络请求，比如加载脚本和图片。Service Worker 可以修改用户的请求，或者直接向用户发出回应，不用联系服务器，这使得用户可以在离线情况下使用网络应用。它还可以在本地缓存资源文件，直接从缓存加载文件，因此可以加快访问速度。
+
+```js
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js');
+  });
+}
+```
+
 ### Fullscreen API
 
 `Fullscreen API` 让我们能够在 `Web app` 中启用全屏模式。它使你可以选择要在全屏模式下查看的元素。在 `Android` 手机中，它将删除浏览器窗口和 `Android` 顶部状态栏（显示网络状态，电池状态等的地方）。

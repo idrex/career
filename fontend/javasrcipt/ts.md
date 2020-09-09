@@ -1578,4 +1578,7 @@ compilerOptions 每个选项的详细说明如下：
 
 参考：
 [通俗易懂的 TypeScript 入门教程](https://mp.weixin.qq.com/s/13Zq_NucuqRvg-CGgk6K2A)
+
 [TypeScript高级用法详解](https://www.cnblogs.com/tangshiwei/p/12052494.html)
+
+[typescript中type和interface区别](https://www.cnblogs.com/EnSnail/p/11233592.html)
