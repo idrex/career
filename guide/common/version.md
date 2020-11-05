@@ -70,3 +70,9 @@ git config --global user.email xxx
 [Git 工作流](http://www.ruanyifeng.com/blog/2015/12/git-workflow.html)
 
 [git flow](https://www.jianshu.com/p/41910dc6ef29)
+
+[validate-commit-msg](https://github.com/conventional-changelog-archived-repos/validate-commit-msg) 用于检查 Node 项目的 Commit message 是否符合格式。
+
+[standard-version](https://github.com/conventional-changelog/standard-version) 版本生成工具，同时生成 Change log 的工具
+
+[约定式提交规范](https://www.conventionalcommits.org/zh-hans/)
