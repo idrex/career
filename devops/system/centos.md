@@ -43,6 +43,7 @@ $ nginx -s reload
 $ yum install nodejs -y
 
 // 安装Node版本管理工具 n
+$ npm config set registry http://registry.npm.taobao.org/
 $ npm install n -g
 
 // 通过n安装最新版
