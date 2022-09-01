@@ -6,11 +6,11 @@
     "build": "dumi build"
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.2.1",
-    "antd": "^4.3.5",
-    "dumi": "^1.0.31"
+    "@ant-design/icons": "^4.7.0",
+    "antd": "^4.22.8",
+    "dumi": "^1.1.47"
   },
   "dependencies": {
-    "immutable": "^4.0.0-rc.12"
+    "immutable": "^4.1.0"
   }
 }
